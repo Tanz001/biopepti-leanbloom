@@ -66,16 +66,16 @@ export const CoaReportsPage: React.FC = () => {
   }, [searchQuery, selectedYear]);
 
   return (
-    <div className="min-h-screen bg-[#F6F8F7] pt-28 pb-20">
+    <div className="min-h-screen bg-[#F4F8FA] pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-[#E4EAE8]">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-[#E2E8EE]">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E7F6F3] text-[#0E9F8E] text-xs font-mono-code font-bold mb-2">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#0E9F8E]" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E6F7F5] text-[#00B8AA] text-xs font-mono-code font-bold mb-2">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#00B8AA]" />
               <span>QUALITY ASSURANCE ARCHIVE</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold font-sora text-[#0B1F2A]">
+            <h1 className="text-3xl sm:text-4xl font-bold font-sora text-[#002050]">
               Certificate of Analysis (COA) Reports
             </h1>
             <p className="text-xs sm:text-sm text-[#5B6B73] mt-1">
@@ -83,17 +83,17 @@ export const CoaReportsPage: React.FC = () => {
             </p>
           </div>
 
-          <span className="font-mono-code text-xs font-bold text-[#0B1F2A] px-3.5 py-1.5 rounded-full bg-white border border-[#E4EAE8] shadow-2xs self-start md:self-auto">
+          <span className="font-mono-code text-xs font-bold text-[#002050] px-3.5 py-1.5 rounded-full bg-white border border-[#E2E8EE] shadow-2xs self-start md:self-auto">
             {COA_RECORDS.length} Authenticated Batches Online
           </span>
         </div>
 
         {/* 1. FAST BATCH VERIFICATION BOX */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[#E4EAE8] shadow-xs">
+        <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[#E2E8EE] shadow-xs">
           <div className="max-w-3xl mx-auto space-y-4">
             <div className="flex items-center gap-2">
-              <Microscope className="w-5 h-5 text-[#0E9F8E]" />
-              <h2 className="font-sora font-bold text-base text-[#0B1F2A]">
+              <Microscope className="w-5 h-5 text-[#00B8AA]" />
+              <h2 className="font-sora font-bold text-base text-[#002050]">
                 Instant Batch Verification
               </h2>
             </div>
@@ -109,13 +109,13 @@ export const CoaReportsPage: React.FC = () => {
                   placeholder="Enter Lot Number (e.g. LL-2025-0814)..."
                   value={verifyBatchInput}
                   onChange={e => setVerifyBatchInput(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#F6F8F7] border border-[#E4EAE8] font-mono-code text-xs text-[#0B1F2A] focus:bg-white"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#F4F8FA] border border-[#E2E8EE] font-mono-code text-xs text-[#002050] focus:bg-white"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#0B1F2A] hover:bg-[#07131A] text-white font-sora font-semibold text-xs transition-colors"
+                className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#002050] hover:bg-[#001538] text-white font-sora font-semibold text-xs transition-colors"
               >
                 Verify Batch
               </button>
@@ -123,17 +123,17 @@ export const CoaReportsPage: React.FC = () => {
 
             {/* Verification Result Display */}
             {verifiedResult && verifiedResult !== 'not_found' && (
-              <div className="p-4 rounded-2xl bg-[#E7F6F3] border border-[#0E9F8E]/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-in fade-in">
+              <div className="p-4 rounded-2xl bg-[#E6F7F5] border border-[#00B8AA]/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-in fade-in">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-white text-[#0E9F8E] shadow-2xs">
+                  <div className="p-2 rounded-xl bg-white text-[#00B8AA] shadow-2xs">
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-sora font-bold text-xs text-[#0B1F2A]">
+                      <span className="font-sora font-bold text-xs text-[#002050]">
                         Verified Authentic Batch
                       </span>
-                      <span className="font-mono-code text-[11px] font-bold text-[#0E9F8E] bg-white px-2 py-0.5 rounded">
+                      <span className="font-mono-code text-[11px] font-bold text-[#00B8AA] bg-white px-2 py-0.5 rounded">
                         Purity: {verifiedResult.purity}
                       </span>
                     </div>
@@ -145,7 +145,7 @@ export const CoaReportsPage: React.FC = () => {
 
                 <button
                   onClick={() => setSelectedCoa(verifiedResult)}
-                  className="px-4 py-2 rounded-full bg-[#0E9F8E] hover:bg-[#0B8576] text-white font-sora font-semibold text-xs flex items-center gap-1.5 transition-colors self-end sm:self-auto"
+                  className="px-4 py-2 rounded-full bg-[#00B8AA] hover:bg-[#009688] text-white font-sora font-semibold text-xs flex items-center gap-1.5 transition-colors self-end sm:self-auto"
                 >
                   <Eye className="w-3.5 h-3.5" />
                   <span>Inspect COA</span>
@@ -159,7 +159,7 @@ export const CoaReportsPage: React.FC = () => {
                 <div>
                   <span className="font-bold">Lot ID Not Found in Instant Database.</span>
                   <p className="text-amber-700 mt-0.5">
-                    For custom synthesis lots or historical batches prior to 2024, contact QA desk at <code>qa@lumoralabs.com</code>.
+                    For custom synthesis lots or historical batches prior to 2024, contact QA desk at <code>qa@biopepti.com</code>.
                   </p>
                 </div>
               </div>
@@ -170,42 +170,42 @@ export const CoaReportsPage: React.FC = () => {
         {/* 2. QUALITY PROCESS (4-STEP VISUAL) */}
         <div className="space-y-6">
           <div className="text-center max-w-xl mx-auto">
-            <span className="text-xs font-mono-code text-[#0E9F8E] font-bold uppercase tracking-wider">
+            <span className="text-xs font-mono-code text-[#00B8AA] font-bold uppercase tracking-wider">
               Analytical Rigor
             </span>
-            <h2 className="text-2xl font-bold font-sora text-[#0B1F2A] mt-1">
+            <h2 className="text-2xl font-bold font-sora text-[#002050] mt-1">
               4-Stage Quality Assurance Cycle
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-5 rounded-3xl bg-white border border-[#E4EAE8] space-y-2 card-lift">
-              <span className="font-mono-code font-bold text-xs text-[#0E9F8E]">STAGE 01</span>
-              <h3 className="font-sora font-bold text-sm text-[#0B1F2A]">Solid-Phase Synthesis</h3>
+            <div className="p-5 rounded-3xl bg-white border border-[#E2E8EE] space-y-2 card-lift">
+              <span className="font-mono-code font-bold text-xs text-[#00B8AA]">STAGE 01</span>
+              <h3 className="font-sora font-bold text-sm text-[#002050]">Solid-Phase Synthesis</h3>
               <p className="text-[11px] text-[#5B6B73] leading-relaxed">
                 Stepwise microwave-assisted coupling in Class 100 cleanrooms using high-purity Fmoc building blocks.
               </p>
             </div>
 
-            <div className="p-5 rounded-3xl bg-white border border-[#E4EAE8] space-y-2 card-lift">
-              <span className="font-mono-code font-bold text-xs text-[#0E9F8E]">STAGE 02</span>
-              <h3 className="font-sora font-bold text-sm text-[#0B1F2A]">Preparative HPLC</h3>
+            <div className="p-5 rounded-3xl bg-white border border-[#E2E8EE] space-y-2 card-lift">
+              <span className="font-mono-code font-bold text-xs text-[#00B8AA]">STAGE 02</span>
+              <h3 className="font-sora font-bold text-sm text-[#002050]">Preparative HPLC</h3>
               <p className="text-[11px] text-[#5B6B73] leading-relaxed">
                 Dual C18 reverse-phase purification removes truncated sequences and synthesis enantiomers.
               </p>
             </div>
 
-            <div className="p-5 rounded-3xl bg-white border border-[#E4EAE8] space-y-2 card-lift">
-              <span className="font-mono-code font-bold text-xs text-[#0E9F8E]">STAGE 03</span>
-              <h3 className="font-sora font-bold text-sm text-[#0B1F2A]">HPLC / MS Testing</h3>
+            <div className="p-5 rounded-3xl bg-white border border-[#E2E8EE] space-y-2 card-lift">
+              <span className="font-mono-code font-bold text-xs text-[#00B8AA]">STAGE 03</span>
+              <h3 className="font-sora font-bold text-sm text-[#002050]">HPLC / MS Testing</h3>
               <p className="text-[11px] text-[#5B6B73] leading-relaxed">
                 Analytical UHPLC verifies &gt;99% chromatographic purity; High-Res ESI-MS verifies theoretical mass.
               </p>
             </div>
 
-            <div className="p-5 rounded-3xl bg-white border border-[#E4EAE8] space-y-2 card-lift">
-              <span className="font-mono-code font-bold text-xs text-[#0E9F8E]">STAGE 04</span>
-              <h3 className="font-sora font-bold text-sm text-[#0B1F2A]">Documentation</h3>
+            <div className="p-5 rounded-3xl bg-white border border-[#E2E8EE] space-y-2 card-lift">
+              <span className="font-mono-code font-bold text-xs text-[#00B8AA]">STAGE 04</span>
+              <h3 className="font-sora font-bold text-sm text-[#002050]">Documentation</h3>
               <p className="text-[11px] text-[#5B6B73] leading-relaxed">
                 Full analytical certificate generated, certified by senior QA chemist, and indexed permanently.
               </p>
@@ -215,7 +215,7 @@ export const CoaReportsPage: React.FC = () => {
 
         {/* 3. COA DIRECTORY TABLE */}
         <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-4 rounded-3xl border border-[#E4EAE8] shadow-xs">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-4 rounded-3xl border border-[#E2E8EE] shadow-xs">
             <div className="relative w-full sm:max-w-md">
               <Search className="w-4 h-4 text-[#5B6B73] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
@@ -223,7 +223,7 @@ export const CoaReportsPage: React.FC = () => {
                 placeholder="Search by product name, SKU, or batch #..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 rounded-2xl bg-[#F6F8F7] border border-[#E4EAE8] text-xs font-inter text-[#0B1F2A]"
+                className="w-full pl-9 pr-4 py-2 rounded-2xl bg-[#F4F8FA] border border-[#E2E8EE] text-xs font-inter text-[#002050]"
               />
             </div>
 
@@ -235,7 +235,7 @@ export const CoaReportsPage: React.FC = () => {
               <select
                 value={selectedYear}
                 onChange={e => setSelectedYear(e.target.value)}
-                className="px-3 py-1.5 rounded-xl bg-[#F6F8F7] border border-[#E4EAE8] text-xs font-semibold text-[#0B1F2A]"
+                className="px-3 py-1.5 rounded-xl bg-[#F4F8FA] border border-[#E2E8EE] text-xs font-semibold text-[#002050]"
               >
                 <option value="All Years">All Years</option>
                 <option value="2025">2025 Batches</option>
@@ -244,10 +244,10 @@ export const CoaReportsPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl border border-[#E4EAE8] overflow-hidden shadow-xs">
+          <div className="bg-white rounded-3xl border border-[#E2E8EE] overflow-hidden shadow-xs">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-[#0B1F2A] text-white text-[11px] font-sora font-semibold uppercase tracking-wider">
+                <thead className="bg-[#002050] text-white text-[11px] font-sora font-semibold uppercase tracking-wider">
                   <tr>
                     <th className="py-3.5 px-4">Batch Number</th>
                     <th className="py-3.5 px-4">Product Name</th>
@@ -258,22 +258,22 @@ export const CoaReportsPage: React.FC = () => {
                     <th className="py-3.5 px-4 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#E4EAE8] font-inter">
+                <tbody className="divide-y divide-[#E2E8EE] font-inter">
                   {filteredRecords.map(coa => (
                     <tr
                       key={coa.id}
                       className="hover:bg-slate-50 transition-colors"
                     >
-                      <td className="py-3.5 px-4 font-mono-code font-bold text-[#0B1F2A]">
+                      <td className="py-3.5 px-4 font-mono-code font-bold text-[#002050]">
                         {coa.batchNumber}
                       </td>
-                      <td className="py-3.5 px-4 font-sora font-bold text-xs text-[#0B1F2A]">
+                      <td className="py-3.5 px-4 font-sora font-bold text-xs text-[#002050]">
                         {coa.productName}
                       </td>
                       <td className="py-3.5 px-4 font-mono-code text-[#5B6B73]">
                         [{coa.sku}] {coa.spec}
                       </td>
-                      <td className="py-3.5 px-4 font-mono-code text-[#0E9F8E] font-bold text-sm">
+                      <td className="py-3.5 px-4 font-mono-code text-[#00B8AA] font-bold text-sm">
                         {coa.purity}
                       </td>
                       <td className="py-3.5 px-4 text-slate-600">
@@ -285,7 +285,7 @@ export const CoaReportsPage: React.FC = () => {
                       <td className="py-3.5 px-4 text-right">
                         <button
                           onClick={() => setSelectedCoa(coa)}
-                          className="px-3.5 py-1.5 rounded-full bg-[#0E9F8E] hover:bg-[#0B8576] text-white font-sora text-xs font-semibold inline-flex items-center gap-1.5 transition-colors shadow-2xs"
+                          className="px-3.5 py-1.5 rounded-full bg-[#00B8AA] hover:bg-[#009688] text-white font-sora text-xs font-semibold inline-flex items-center gap-1.5 transition-colors shadow-2xs"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>View COA</span>

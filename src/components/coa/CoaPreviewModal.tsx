@@ -23,19 +23,19 @@ export const CoaPreviewModal: React.FC<CoaPreviewModalProps> = ({ coa, onClose }
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-[#0B1F2A]/70 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
+        className="fixed inset-0 bg-[#002050]/70 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
       />
 
       {/* Modal Dialog Card */}
-      <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-[#E4EAE8] overflow-hidden z-10 animate-in zoom-in-95 duration-200 max-h-[92vh] flex flex-col">
+      <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-[#E2E8EE] overflow-hidden z-10 animate-in zoom-in-95 duration-200 max-h-[92vh] flex flex-col">
         {/* Modal Top Bar */}
-        <div className="px-6 py-3 border-b border-[#E4EAE8] bg-[#0B1F2A] text-white flex items-center justify-between">
+        <div className="px-6 py-3 border-b border-[#E2E8EE] bg-[#002050] text-white flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-[#5EEAD4]" />
+            <ShieldCheck className="w-4 h-4 text-[#5EC8E8]" />
             <span className="font-sora text-xs font-semibold">
               Authenticated Certificate of Analysis
             </span>
-            <span className="font-mono-code text-[11px] bg-white/10 px-2 py-0.5 rounded text-[#5EEAD4]">
+            <span className="font-mono-code text-[11px] bg-white/10 px-2 py-0.5 rounded text-[#5EC8E8]">
               {coa.batchNumber}
             </span>
           </div>
@@ -59,13 +59,13 @@ export const CoaPreviewModal: React.FC<CoaPreviewModalProps> = ({ coa, onClose }
         </div>
 
         {/* Certificate Paper Body (A4 Style) */}
-        <div className="overflow-y-auto p-6 sm:p-10 space-y-6 flex-1 bg-[#FAFCFB]">
+        <div className="overflow-y-auto p-6 sm:p-10 space-y-6 flex-1 bg-[#F7FAFC]">
           {/* Document Header */}
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-6 border-b-2 border-[#0B1F2A]">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-6 border-b-2 border-[#002050]">
             <div>
-              <div className="flex items-baseline">
-                <span className="font-sora font-extrabold text-2xl text-[#0B1F2A]">LUMORA</span>
-                <span className="font-sora font-light text-2xl text-[#0E9F8E] tracking-widest ml-1.5">LABS</span>
+              <div className="flex items-center gap-2.5">
+                <img src="/logo-mark.png" alt="" className="h-9 w-auto object-contain" />
+                <span className="font-sora font-extrabold text-2xl text-[#002050]">Biopepti</span>
               </div>
               <p className="text-[11px] text-[#5B6B73] font-mono-code mt-0.5">
                 DIVISION OF QUALITY ASSURANCE & ADVANCED ANALYTICAL BIOTECH
@@ -76,46 +76,46 @@ export const CoaPreviewModal: React.FC<CoaPreviewModalProps> = ({ coa, onClose }
             </div>
 
             <div className="text-right sm:text-right font-mono-code text-xs">
-              <span className="inline-block px-3 py-1 rounded bg-[#E7F6F3] text-[#0E9F8E] font-bold text-sm mb-1 border border-[#0E9F8E]/20">
+              <span className="inline-block px-3 py-1 rounded bg-[#E6F7F5] text-[#00B8AA] font-bold text-sm mb-1 border border-[#00B8AA]/20">
                 VERIFIED COA
               </span>
-              <p className="text-[#0B1F2A] font-bold">BATCH: {coa.batchNumber}</p>
+              <p className="text-[#002050] font-bold">BATCH: {coa.batchNumber}</p>
               <p className="text-slate-500 text-[11px]">Tested: {coa.testedDate}</p>
             </div>
           </div>
 
           {/* Product Overview Box */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-xl bg-white border border-[#E4EAE8] text-xs">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-xl bg-white border border-[#E2E8EE] text-xs">
             <div>
               <span className="text-[10px] text-[#5B6B73] uppercase block font-semibold">Product Name</span>
-              <span className="font-sora font-bold text-[#0B1F2A]">{coa.productName}</span>
+              <span className="font-sora font-bold text-[#002050]">{coa.productName}</span>
             </div>
             <div>
               <span className="text-[10px] text-[#5B6B73] uppercase block font-semibold">Product SKU</span>
-              <span className="font-mono-code font-bold text-[#0B1F2A]">{coa.sku}</span>
+              <span className="font-mono-code font-bold text-[#002050]">{coa.sku}</span>
             </div>
             <div>
               <span className="text-[10px] text-[#5B6B73] uppercase block font-semibold">Specification</span>
-              <span className="font-mono-code text-[#0B1F2A]">{coa.spec}</span>
+              <span className="font-mono-code text-[#002050]">{coa.spec}</span>
             </div>
             <div>
               <span className="text-[10px] text-[#5B6B73] uppercase block font-semibold">Expiry Date</span>
-              <span className="font-mono-code text-[#0E9F8E] font-bold">{coa.expiryDate}</span>
+              <span className="font-mono-code text-[#00B8AA] font-bold">{coa.expiryDate}</span>
             </div>
           </div>
 
           {/* Analytical Test Results Table */}
           <div>
-            <h4 className="font-sora font-bold text-xs uppercase tracking-wider text-[#0B1F2A] mb-2 flex items-center justify-between">
+            <h4 className="font-sora font-bold text-xs uppercase tracking-wider text-[#002050] mb-2 flex items-center justify-between">
               <span>Physicochemical Analysis Summary</span>
-              <span className="font-mono-code text-[#0E9F8E] text-[11px] font-semibold">
+              <span className="font-mono-code text-[#00B8AA] text-[11px] font-semibold">
                 Purity: {coa.purity}
               </span>
             </h4>
 
-            <div className="border border-[#E4EAE8] rounded-xl overflow-hidden bg-white text-xs">
+            <div className="border border-[#E2E8EE] rounded-xl overflow-hidden bg-white text-xs">
               <table className="w-full text-left">
-                <thead className="bg-[#F6F8F7] border-b border-[#E4EAE8] text-[11px] font-semibold text-[#5B6B73]">
+                <thead className="bg-[#F4F8FA] border-b border-[#E2E8EE] text-[11px] font-semibold text-[#5B6B73]">
                   <tr>
                     <th className="py-2.5 px-3">Test Parameter</th>
                     <th className="py-2.5 px-3">Specification Criteria</th>
@@ -123,7 +123,7 @@ export const CoaPreviewModal: React.FC<CoaPreviewModalProps> = ({ coa, onClose }
                     <th className="py-2.5 px-3">Disposition</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#E4EAE8] font-inter">
+                <tbody className="divide-y divide-[#E2E8EE] font-inter">
                   <tr>
                     <td className="py-2.5 px-3 font-medium">Appearance</td>
                     <td className="py-2.5 px-3 text-slate-500">White to off-white lyophilized cake</td>
@@ -139,7 +139,7 @@ export const CoaPreviewModal: React.FC<CoaPreviewModalProps> = ({ coa, onClose }
                   <tr>
                     <td className="py-2.5 px-3 font-medium">Chromatographic Purity</td>
                     <td className="py-2.5 px-3 text-slate-500">≥ 98.0% (RP-UHPLC @ 214nm)</td>
-                    <td className="py-2.5 px-3 font-mono-code font-bold text-[#0E9F8E]">{coa.purity}</td>
+                    <td className="py-2.5 px-3 font-mono-code font-bold text-[#00B8AA]">{coa.purity}</td>
                     <td className="py-2.5 px-3 font-mono-code text-emerald-600 font-bold">PASS</td>
                   </tr>
                   <tr>
@@ -166,9 +166,9 @@ export const CoaPreviewModal: React.FC<CoaPreviewModalProps> = ({ coa, onClose }
           </div>
 
           {/* Simulated HPLC Chromatogram Graphic */}
-          <div className="p-4 rounded-xl bg-white border border-[#E4EAE8]">
+          <div className="p-4 rounded-xl bg-white border border-[#E2E8EE]">
             <div className="flex items-center justify-between mb-2">
-              <span className="font-sora text-xs font-bold text-[#0B1F2A]">
+              <span className="font-sora text-xs font-bold text-[#002050]">
                 Reverse-Phase UHPLC Chromatogram (UV 214 nm)
               </span>
               <span className="font-mono-code text-[10px] text-slate-400">
@@ -176,7 +176,7 @@ export const CoaPreviewModal: React.FC<CoaPreviewModalProps> = ({ coa, onClose }
               </span>
             </div>
 
-            <div className="h-28 w-full bg-[#F6F8F7] rounded-lg border border-[#E4EAE8] relative overflow-hidden flex items-end px-6 py-2">
+            <div className="h-28 w-full bg-[#F4F8FA] rounded-lg border border-[#E2E8EE] relative overflow-hidden flex items-end px-6 py-2">
               {/* Baseline and axes */}
               <div className="absolute inset-x-0 bottom-6 border-b border-slate-300" />
               <div className="absolute top-2 bottom-6 left-6 border-l border-slate-300" />
@@ -186,11 +186,11 @@ export const CoaPreviewModal: React.FC<CoaPreviewModalProps> = ({ coa, onClose }
                 <path
                   d="M 10 90 L 180 90 Q 220 90 240 85 Q 248 10 250 8 Q 252 10 260 85 Q 280 90 490 90"
                   fill="none"
-                  stroke="#0E9F8E"
+                  stroke="#00B8AA"
                   strokeWidth="2"
                 />
                 {/* Micro peak text label */}
-                <text x="250" y="24" textAnchor="middle" fill="#0B1F2A" fontSize="10" fontFamily="monospace" fontWeight="bold">
+                <text x="250" y="24" textAnchor="middle" fill="#002050" fontSize="10" fontFamily="monospace" fontWeight="bold">
                   tR = {coa.retentionTime || '12.4m'} (99%+)
                 </text>
               </svg>
@@ -207,15 +207,15 @@ export const CoaPreviewModal: React.FC<CoaPreviewModalProps> = ({ coa, onClose }
           </div>
 
           {/* QA Sign-off & Seal */}
-          <div className="pt-4 border-t border-[#E4EAE8] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs">
+          <div className="pt-4 border-t border-[#E2E8EE] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs">
             <div>
-              <p className="font-sora font-semibold text-[#0B1F2A]">Analytical QA Sign-off:</p>
+              <p className="font-sora font-semibold text-[#002050]">Analytical QA Sign-off:</p>
               <p className="font-mono-code text-[#5B6B73] mt-0.5">{coa.analyst}</p>
-              <p className="text-[10px] text-slate-400">Lumora Labs Biotech Analytical Standards</p>
+              <p className="text-[10px] text-slate-400">Biopepti Biotech Analytical Standards</p>
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="w-16 h-16 rounded-full border-2 border-dashed border-[#0E9F8E] flex flex-col items-center justify-center text-center p-1 font-mono-code text-[8px] text-[#0E9F8E]">
+              <div className="w-16 h-16 rounded-full border-2 border-dashed border-[#00B8AA] flex flex-col items-center justify-center text-center p-1 font-mono-code text-[8px] text-[#00B8AA]">
                 <ShieldCheck className="w-4 h-4 mb-0.5" />
                 <span className="font-bold leading-tight">QA QC</span>
                 <span>APPROVED</span>
@@ -230,9 +230,9 @@ export const CoaPreviewModal: React.FC<CoaPreviewModalProps> = ({ coa, onClose }
                   a.download = coa.pdfFilename || `COA_${coa.batchNumber}.json`;
                   a.click();
                 }}
-                className="px-4 py-2 rounded-full bg-[#0B1F2A] text-white font-sora font-semibold text-xs flex items-center gap-1.5 hover:bg-[#07131A] transition-colors"
+                className="px-4 py-2 rounded-full bg-[#002050] text-white font-sora font-semibold text-xs flex items-center gap-1.5 hover:bg-[#001538] transition-colors"
               >
-                <Download className="w-3.5 h-3.5 text-[#5EEAD4]" />
+                <Download className="w-3.5 h-3.5 text-[#5EC8E8]" />
                 <span>Download Report</span>
               </button>
             </div>

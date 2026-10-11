@@ -41,16 +41,16 @@ export const OemServicesPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F6F8F7] pt-28 pb-20">
+    <div className="min-h-screen bg-[#F4F8FA] pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
         {/* 1. HERO SECTION */}
         <div className="text-center max-w-3xl mx-auto space-y-4 pt-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E7F6F3] text-[#0E9F8E] text-xs font-semibold font-sora shadow-2xs">
-            <Sparkles className="w-3.5 h-3.5 text-[#0E9F8E]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E6F7F5] text-[#00B8AA] text-xs font-semibold font-sora shadow-2xs">
+            <Sparkles className="w-3.5 h-3.5 text-[#00B8AA]" />
             <span>OEM & Custom Synthesis Suite</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold font-sora text-[#0B1F2A] tracking-tight">
+          <h1 className="text-4xl sm:text-5xl font-bold font-sora text-[#002050] tracking-tight">
             Your brand. Our synthesis.
           </h1>
 
@@ -61,41 +61,41 @@ export const OemServicesPage: React.FC = () => {
 
         {/* 2. SERVICES GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="p-6 rounded-3xl bg-white border border-[#E4EAE8] shadow-xs space-y-3 card-lift">
-            <div className="w-12 h-12 rounded-2xl bg-[#E7F6F3] text-[#0E9F8E] flex items-center justify-center">
+          <div className="p-6 rounded-3xl bg-white border border-[#E2E8EE] shadow-xs space-y-3 card-lift">
+            <div className="w-12 h-12 rounded-2xl bg-[#E6F7F5] text-[#00B8AA] flex items-center justify-center">
               <Layers className="w-6 h-6" />
             </div>
-            <h3 className="font-sora font-bold text-lg text-[#0B1F2A]">Private Label Solutions</h3>
+            <h3 className="font-sora font-bold text-lg text-[#002050]">Private Label Solutions</h3>
             <p className="text-xs text-[#5B6B73] leading-relaxed">
               Launch your peptide brand with our proven catalog. Custom high-adhesion waterproof labels, bespoke cap colors, and tamper-evident shrink bands.
             </p>
           </div>
 
-          <div className="p-6 rounded-3xl bg-white border border-[#E4EAE8] shadow-xs space-y-3 card-lift">
-            <div className="w-12 h-12 rounded-2xl bg-[#E7F6F3] text-[#0E9F8E] flex items-center justify-center">
+          <div className="p-6 rounded-3xl bg-white border border-[#E2E8EE] shadow-xs space-y-3 card-lift">
+            <div className="w-12 h-12 rounded-2xl bg-[#E6F7F5] text-[#00B8AA] flex items-center justify-center">
               <FlaskConical className="w-6 h-6" />
             </div>
-            <h3 className="font-sora font-bold text-lg text-[#0B1F2A]">Custom Synthesis</h3>
+            <h3 className="font-sora font-bold text-lg text-[#002050]">Custom Synthesis</h3>
             <p className="text-xs text-[#5B6B73] leading-relaxed">
               Solid-phase & liquid-phase synthesis for novel amino acid sequences, cyclizations, fluorophore tagging, D-amino acids, and fatty-acid conjugates.
             </p>
           </div>
 
-          <div className="p-6 rounded-3xl bg-white border border-[#E4EAE8] shadow-xs space-y-3 card-lift">
-            <div className="w-12 h-12 rounded-2xl bg-[#E7F6F3] text-[#0E9F8E] flex items-center justify-center">
+          <div className="p-6 rounded-3xl bg-white border border-[#E2E8EE] shadow-xs space-y-3 card-lift">
+            <div className="w-12 h-12 rounded-2xl bg-[#E6F7F5] text-[#00B8AA] flex items-center justify-center">
               <Box className="w-6 h-6" />
             </div>
-            <h3 className="font-sora font-bold text-lg text-[#0B1F2A]">Custom Packaging</h3>
+            <h3 className="font-sora font-bold text-lg text-[#002050]">Custom Packaging</h3>
             <p className="text-xs text-[#5B6B73] leading-relaxed">
               Rigid magnet-closure 10-vial presentation boxes, foil-stamped corporate packaging, custom foam inserts, and sterile blister sealing.
             </p>
           </div>
 
-          <div className="p-6 rounded-3xl bg-white border border-[#E4EAE8] shadow-xs space-y-3 card-lift">
-            <div className="w-12 h-12 rounded-2xl bg-[#E7F6F3] text-[#0E9F8E] flex items-center justify-center">
+          <div className="p-6 rounded-3xl bg-white border border-[#E2E8EE] shadow-xs space-y-3 card-lift">
+            <div className="w-12 h-12 rounded-2xl bg-[#E6F7F5] text-[#00B8AA] flex items-center justify-center">
               <Truck className="w-6 h-6" />
             </div>
-            <h3 className="font-sora font-bold text-lg text-[#0B1F2A]">Distributor Programs</h3>
+            <h3 className="font-sora font-bold text-lg text-[#002050]">Distributor Programs</h3>
             <p className="text-xs text-[#5B6B73] leading-relaxed">
               Wholesale volume tier contracts for domestic and international distributors. Dedicated account manager and guaranteed reserve inventory.
             </p>
@@ -103,12 +103,12 @@ export const OemServicesPage: React.FC = () => {
         </div>
 
         {/* 3. BEFORE / AFTER LABEL MOCKUP VISUAL */}
-        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#E4EAE8] shadow-sm">
+        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#E2E8EE] shadow-sm">
           <div className="text-center max-w-xl mx-auto mb-10">
-            <span className="text-xs font-mono-code text-[#0E9F8E] font-bold uppercase tracking-wider">
+            <span className="text-xs font-mono-code text-[#00B8AA] font-bold uppercase tracking-wider">
               Packaging Transformation
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold font-sora text-[#0B1F2A] mt-1">
+            <h2 className="text-2xl sm:text-3xl font-bold font-sora text-[#002050] mt-1">
               From Raw Bulk to High-End Finished Goods
             </h2>
             <p className="text-xs sm:text-sm text-[#5B6B73] mt-1">
@@ -118,7 +118,7 @@ export const OemServicesPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
             {/* Standard Bulk Generic Presentation */}
-            <div className="p-6 rounded-3xl bg-[#F6F8F7] border border-[#E4EAE8] text-center space-y-4">
+            <div className="p-6 rounded-3xl bg-[#F4F8FA] border border-[#E2E8EE] text-center space-y-4">
               <span className="inline-block px-3 py-1 rounded-full bg-slate-200 text-slate-700 font-mono-code text-xs font-bold">
                 BEFORE: Generic Bulk Vial
               </span>
@@ -140,21 +140,21 @@ export const OemServicesPage: React.FC = () => {
             </div>
 
             {/* Custom Branded Luxury Presentation */}
-            <div className="p-6 rounded-3xl bg-radial from-[#E7F6F3] to-white border-2 border-[#0E9F8E] text-center space-y-4 shadow-lg relative overflow-hidden">
-              <span className="inline-block px-3 py-1 rounded-full bg-[#0B1F2A] text-[#5EEAD4] font-mono-code text-xs font-bold shadow-xs">
+            <div className="p-6 rounded-3xl bg-radial from-[#E6F7F5] to-white border-2 border-[#00B8AA] text-center space-y-4 shadow-lg relative overflow-hidden">
+              <span className="inline-block px-3 py-1 rounded-full bg-[#002050] text-[#5EC8E8] font-mono-code text-xs font-bold shadow-xs">
                 AFTER: Custom Client OEM Presentation
               </span>
               <div className="h-52 flex items-center justify-center transform hover:scale-105 transition-transform duration-300">
                 <VialGraphic
                   size={135}
-                  color="#0E9F8E"
-                  accent="#5EEAD4"
+                  color="#00B8AA"
+                  accent="#5EC8E8"
                   label="ACME BIOTECH"
                   sublabel="PURE-RESEARCH"
                   purity="≥99.8% HPLC"
                 />
               </div>
-              <ul className="text-xs text-[#0B1F2A] font-medium space-y-1.5 text-left max-w-xs mx-auto">
+              <ul className="text-xs text-[#002050] font-medium space-y-1.5 text-left max-w-xs mx-auto">
                 <li className="flex items-center gap-2 text-emerald-700 font-semibold">
                   <CheckCircle2 className="w-3.5 h-3.5" /> High-definition metallic foil label
                 </li>
@@ -172,10 +172,10 @@ export const OemServicesPage: React.FC = () => {
         {/* 4. PROCESS TIMELINE (6 STEPS) */}
         <div className="space-y-8">
           <div className="text-center max-w-xl mx-auto">
-            <span className="text-xs font-mono-code text-[#0E9F8E] font-bold uppercase tracking-wider">
+            <span className="text-xs font-mono-code text-[#00B8AA] font-bold uppercase tracking-wider">
               Production Journey
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold font-sora text-[#0B1F2A] mt-1">
+            <h2 className="text-2xl sm:text-3xl font-bold font-sora text-[#002050] mt-1">
               6-Stage OEM Fulfillment Workflow
             </h2>
           </div>
@@ -191,12 +191,12 @@ export const OemServicesPage: React.FC = () => {
             ].map(step => (
               <div
                 key={step.num}
-                className="p-5 rounded-3xl bg-white border border-[#E4EAE8] shadow-2xs space-y-2 card-lift"
+                className="p-5 rounded-3xl bg-white border border-[#E2E8EE] shadow-2xs space-y-2 card-lift"
               >
-                <span className="font-mono-code text-xl font-extrabold text-[#0E9F8E] block">
+                <span className="font-mono-code text-xl font-extrabold text-[#00B8AA] block">
                   {step.num}
                 </span>
-                <h4 className="font-sora font-bold text-sm text-[#0B1F2A]">{step.title}</h4>
+                <h4 className="font-sora font-bold text-sm text-[#002050]">{step.title}</h4>
                 <p className="text-[11px] text-[#5B6B73] leading-relaxed">{step.desc}</p>
               </div>
             ))}
@@ -205,30 +205,30 @@ export const OemServicesPage: React.FC = () => {
 
         {/* 5. MOQ & LEAD TIME INFO CARDS */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-3xl bg-white border border-[#E4EAE8] space-y-2">
-            <div className="flex items-center gap-2 text-[#0E9F8E]">
+          <div className="p-6 rounded-3xl bg-white border border-[#E2E8EE] space-y-2">
+            <div className="flex items-center gap-2 text-[#00B8AA]">
               <Award className="w-5 h-5" />
-              <h3 className="font-sora font-bold text-sm text-[#0B1F2A]">Low OEM MOQ</h3>
+              <h3 className="font-sora font-bold text-sm text-[#002050]">Low OEM MOQ</h3>
             </div>
             <p className="text-xs text-[#5B6B73] leading-relaxed">
               Private label branding begins at just <strong>100 vials (10 boxes)</strong> per SKU for standard catalog sequences.
             </p>
           </div>
 
-          <div className="p-6 rounded-3xl bg-white border border-[#E4EAE8] space-y-2">
-            <div className="flex items-center gap-2 text-[#0E9F8E]">
+          <div className="p-6 rounded-3xl bg-white border border-[#E2E8EE] space-y-2">
+            <div className="flex items-center gap-2 text-[#00B8AA]">
               <Clock className="w-5 h-5" />
-              <h3 className="font-sora font-bold text-sm text-[#0B1F2A]">Rapid Lead Times</h3>
+              <h3 className="font-sora font-bold text-sm text-[#002050]">Rapid Lead Times</h3>
             </div>
             <p className="text-xs text-[#5B6B73] leading-relaxed">
               Standard private-label orders ship within <strong>7–10 business days</strong>. Novel sequence synthesis takes <strong>14–21 days</strong>.
             </p>
           </div>
 
-          <div className="p-6 rounded-3xl bg-white border border-[#E4EAE8] space-y-2">
-            <div className="flex items-center gap-2 text-[#0E9F8E]">
+          <div className="p-6 rounded-3xl bg-white border border-[#E2E8EE] space-y-2">
+            <div className="flex items-center gap-2 text-[#00B8AA]">
               <ShieldCheck className="w-5 h-5" />
-              <h3 className="font-sora font-bold text-sm text-[#0B1F2A]">Strict Confidentiality</h3>
+              <h3 className="font-sora font-bold text-sm text-[#002050]">Strict Confidentiality</h3>
             </div>
             <p className="text-xs text-[#5B6B73] leading-relaxed">
               Comprehensive Non-Disclosure Agreements (NDA) executed prior to formula formulation. Your brand identity remains 100% confidential.
@@ -237,12 +237,12 @@ export const OemServicesPage: React.FC = () => {
         </div>
 
         {/* 6. OEM INQUIRY FORM */}
-        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#E4EAE8] shadow-sm max-w-3xl mx-auto">
+        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#E2E8EE] shadow-sm max-w-3xl mx-auto">
           <div className="text-center mb-8">
-            <span className="text-xs font-mono-code text-[#0E9F8E] font-bold uppercase tracking-wider">
+            <span className="text-xs font-mono-code text-[#00B8AA] font-bold uppercase tracking-wider">
               Start Your Private Label Project
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold font-sora text-[#0B1F2A] mt-1">
+            <h2 className="text-2xl sm:text-3xl font-bold font-sora text-[#002050] mt-1">
               Submit OEM Technical Inquiry
             </h2>
             <p className="text-xs sm:text-sm text-[#5B6B73] mt-1">
@@ -251,15 +251,15 @@ export const OemServicesPage: React.FC = () => {
           </div>
 
           {submitted ? (
-            <div className="p-8 rounded-2xl bg-[#E7F6F3] border border-[#0E9F8E]/30 text-center space-y-3">
-              <CheckCircle2 className="w-12 h-12 text-[#0E9F8E] mx-auto" />
-              <h3 className="font-sora font-bold text-lg text-[#0B1F2A]">Inquiry Received</h3>
+            <div className="p-8 rounded-2xl bg-[#E6F7F5] border border-[#00B8AA]/30 text-center space-y-3">
+              <CheckCircle2 className="w-12 h-12 text-[#00B8AA] mx-auto" />
+              <h3 className="font-sora font-bold text-lg text-[#002050]">Inquiry Received</h3>
               <p className="text-xs text-[#5B6B73] max-w-md mx-auto">
                 Thank you, {formData.fullName}. Our lead peptide formulation chemist will review your requirements and reach out via {formData.email} within 12 hours.
               </p>
               <button
                 onClick={() => setSubmitted(false)}
-                className="mt-3 px-6 py-2 rounded-full bg-[#0B1F2A] text-white text-xs font-semibold"
+                className="mt-3 px-6 py-2 rounded-full bg-[#002050] text-white text-xs font-semibold"
               >
                 Submit another request
               </button>
@@ -268,7 +268,7 @@ export const OemServicesPage: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4 text-xs font-inter">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] font-semibold text-[#0B1F2A] mb-1">
+                  <label className="block text-[11px] font-semibold text-[#002050] mb-1">
                     Contact Full Name *
                   </label>
                   <input
@@ -277,12 +277,12 @@ export const OemServicesPage: React.FC = () => {
                     placeholder="e.g. David Campbell"
                     value={formData.fullName}
                     onChange={e => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F8F7] border border-[#E4EAE8] text-[#0B1F2A] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F4F8FA] border border-[#E2E8EE] text-[#002050] focus:bg-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-[#0B1F2A] mb-1">
+                  <label className="block text-[11px] font-semibold text-[#002050] mb-1">
                     Company / Organization *
                   </label>
                   <input
@@ -291,12 +291,12 @@ export const OemServicesPage: React.FC = () => {
                     placeholder="e.g. Campbell Bioscience LLC"
                     value={formData.companyName}
                     onChange={e => setFormData({ ...formData, companyName: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F8F7] border border-[#E4EAE8] text-[#0B1F2A] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F4F8FA] border border-[#E2E8EE] text-[#002050] focus:bg-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-[#0B1F2A] mb-1">
+                  <label className="block text-[11px] font-semibold text-[#002050] mb-1">
                     Business Email *
                   </label>
                   <input
@@ -305,12 +305,12 @@ export const OemServicesPage: React.FC = () => {
                     placeholder="david@campbellbio.com"
                     value={formData.email}
                     onChange={e => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F8F7] border border-[#E4EAE8] text-[#0B1F2A] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F4F8FA] border border-[#E2E8EE] text-[#002050] focus:bg-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-[#0B1F2A] mb-1">
+                  <label className="block text-[11px] font-semibold text-[#002050] mb-1">
                     Phone / WhatsApp Number
                   </label>
                   <input
@@ -318,18 +318,18 @@ export const OemServicesPage: React.FC = () => {
                     placeholder="+1 (415) 000-0000"
                     value={formData.phoneWhatsapp}
                     onChange={e => setFormData({ ...formData, phoneWhatsapp: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F8F7] border border-[#E4EAE8] text-[#0B1F2A] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F4F8FA] border border-[#E2E8EE] text-[#002050] focus:bg-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-[#0B1F2A] mb-1">
+                  <label className="block text-[11px] font-semibold text-[#002050] mb-1">
                     Peptide Family Interest
                   </label>
                   <select
                     value={formData.productInterest}
                     onChange={e => setFormData({ ...formData, productInterest: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F8F7] border border-[#E4EAE8] text-[#0B1F2A] font-medium"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F4F8FA] border border-[#E2E8EE] text-[#002050] font-medium"
                   >
                     <option>Weight Management Peptides (Tirzepatide / Retatrutide)</option>
                     <option>Tissue Healing & Angiogenesis (BPC-157 / TB-500)</option>
@@ -340,13 +340,13 @@ export const OemServicesPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-[#0B1F2A] mb-1">
+                  <label className="block text-[11px] font-semibold text-[#002050] mb-1">
                     Estimated Production Batch
                   </label>
                   <select
                     value={formData.estimatedQuantity}
                     onChange={e => setFormData({ ...formData, estimatedQuantity: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F8F7] border border-[#E4EAE8] text-[#0B1F2A] font-medium"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F4F8FA] border border-[#E2E8EE] text-[#002050] font-medium"
                   >
                     <option>100–500 vials (Pilot Batch)</option>
                     <option>500–2,000 vials (Standard Distribution)</option>
@@ -357,7 +357,7 @@ export const OemServicesPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold text-[#0B1F2A] mb-1">
+                <label className="block text-[11px] font-semibold text-[#002050] mb-1">
                   Project Scope & Specific Requirements
                 </label>
                 <textarea
@@ -365,16 +365,16 @@ export const OemServicesPage: React.FC = () => {
                   placeholder="Detail target concentrations, cap color preferences, box styling, or timeline..."
                   value={formData.message}
                   onChange={e => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full p-3.5 rounded-xl bg-[#F6F8F7] border border-[#E4EAE8] text-[#0B1F2A] focus:bg-white"
+                  className="w-full p-3.5 rounded-xl bg-[#F4F8FA] border border-[#E2E8EE] text-[#002050] focus:bg-white"
                 />
               </div>
 
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-full bg-[#0B1F2A] hover:bg-[#07131A] text-white font-sora font-semibold text-xs flex items-center justify-center gap-2 transition-all shadow-md group"
+                  className="w-full py-3.5 rounded-full bg-[#002050] hover:bg-[#001538] text-white font-sora font-semibold text-xs flex items-center justify-center gap-2 transition-all shadow-md group"
                 >
-                  <Send className="w-3.5 h-3.5 text-[#5EEAD4] group-hover:translate-x-0.5 transition-transform" />
+                  <Send className="w-3.5 h-3.5 text-[#5EC8E8] group-hover:translate-x-0.5 transition-transform" />
                   <span>Transmit Technical OEM Inquiry</span>
                 </button>
               </div>

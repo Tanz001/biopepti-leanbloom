@@ -24,31 +24,31 @@ export const generateQuotePDF = (data: PDFQuoteData) => {
 
   const pageWidth = doc.internal.pageSize.getWidth();
   
-  // Background clean header accent line
-  doc.setFillColor(14, 159, 142); // Primary teal
+  // Background clean header accent line — logo teal
+  doc.setFillColor(0, 184, 170);
   doc.rect(0, 0, pageWidth, 8, 'F');
 
   // Brand Name & Subhead
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(22);
-  doc.setTextColor(11, 31, 42); // Dark ink
-  doc.text('LUMORA LABS', 40, 48);
+  doc.setTextColor(0, 32, 80); // Logo navy
+  doc.text('Biopepti', 40, 48);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(91, 107, 115);
   doc.text('WHOLESALE BIOTECH & PEPTIDE SYNTHESIS', 40, 62);
-  doc.text('Hong Kong SAR • Los Angeles, USA • sales@lumoralabs.com', 40, 74);
+  doc.text('Hong Kong SAR • Los Angeles, USA • sales@biopepti.com', 40, 74);
 
   // Quote Meta Block (Right aligned)
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(14);
-  doc.setTextColor(14, 159, 142);
+  doc.setTextColor(0, 184, 170);
   doc.text('WHOLESALE QUOTATION', pageWidth - 40, 46, { align: 'right' });
 
   doc.setFont('courier', 'bold');
   doc.setFontSize(11);
-  doc.setTextColor(11, 31, 42);
+  doc.setTextColor(0, 32, 80);
   doc.text(`ID: ${data.quoteId}`, pageWidth - 40, 62, { align: 'right' });
 
   doc.setFont('helvetica', 'normal');
@@ -58,17 +58,17 @@ export const generateQuotePDF = (data: PDFQuoteData) => {
   doc.text('Validity: 30 Days from Issue', pageWidth - 40, 87, { align: 'right' });
 
   // Divider line
-  doc.setDrawColor(228, 234, 232);
+  doc.setDrawColor(226, 232, 238);
   doc.setLineWidth(1);
   doc.line(40, 98, pageWidth - 40, 98);
 
   // Customer / Destination Info Box
-  doc.setFillColor(246, 248, 247);
+  doc.setFillColor(244, 248, 250);
   doc.roundedRect(40, 110, pageWidth - 80, 78, 6, 6, 'F');
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
-  doc.setTextColor(11, 31, 42);
+  doc.setTextColor(0, 32, 80);
   doc.text('PREPARED FOR / INSTITUTION:', 54, 128);
   doc.text('DESTINATION / DISPATCH:', (pageWidth / 2) + 10, 128);
 
@@ -108,7 +108,7 @@ export const generateQuotePDF = (data: PDFQuoteData) => {
     body: tableData,
     theme: 'grid',
     headStyles: {
-      fillColor: [11, 31, 42],
+      fillColor: [0, 32, 80],
       textColor: [255, 255, 255],
       fontSize: 8,
       fontStyle: 'bold',
@@ -126,7 +126,7 @@ export const generateQuotePDF = (data: PDFQuoteData) => {
     },
     styles: {
       fontSize: 8.5,
-      textColor: [11, 31, 42],
+      textColor: [0, 32, 80],
       lineColor: [228, 234, 232],
       lineWidth: 0.5,
       cellPadding: 6
@@ -147,7 +147,7 @@ export const generateQuotePDF = (data: PDFQuoteData) => {
   // Notes on left
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
-  doc.setTextColor(11, 31, 42);
+  doc.setTextColor(0, 32, 80);
   doc.text('TERMS & WHOLESALE CONDITIONS:', 40, finalY + 10);
 
   doc.setFont('helvetica', 'normal');
@@ -176,7 +176,7 @@ export const generateQuotePDF = (data: PDFQuoteData) => {
   doc.text(`$${data.subtotal.toFixed(2)}`, totalsX + totalsW - 12, finalY + 18, { align: 'right' });
 
   if (data.discountAmount > 0) {
-    doc.setTextColor(14, 159, 142);
+    doc.setTextColor(0, 184, 170);
     doc.text('Wholesale Volume Discount:', totalsX + 12, finalY + 32);
     doc.text(`-$${data.discountAmount.toFixed(2)}`, totalsX + totalsW - 12, finalY + 32, { align: 'right' });
   }
@@ -191,12 +191,12 @@ export const generateQuotePDF = (data: PDFQuoteData) => {
   }
 
   // Grand Total line
-  doc.setDrawColor(228, 234, 232);
+  doc.setDrawColor(226, 232, 238);
   doc.line(totalsX + 12, finalY + 67, totalsX + totalsW - 12, finalY + 67);
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
-  doc.setTextColor(11, 31, 42);
+  doc.setTextColor(0, 32, 80);
   doc.text('Grand Total (USD):', totalsX + 12, finalY + 81);
   doc.setFont('courier', 'bold');
   doc.text(`$${data.grandTotal.toFixed(2)}`, totalsX + totalsW - 12, finalY + 81, { align: 'right' });
@@ -219,8 +219,8 @@ export const generateQuotePDF = (data: PDFQuoteData) => {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(148, 163, 184);
-  doc.text('Lumora Labs Biotech Group Ltd. • ISO 9001:2015 Certified • USP Grade Standards', pageWidth / 2, bottomY + 28, { align: 'center' });
+  doc.text('Biopepti Biotech Group Ltd. • ISO 9001:2015 Certified • USP Grade Standards', pageWidth / 2, bottomY + 28, { align: 'center' });
 
   // Save the document
-  doc.save(`${data.quoteId}_LumoraLabs_Quotation.pdf`);
+  doc.save(`${data.quoteId}_Biopepti_Quotation.pdf`);
 };

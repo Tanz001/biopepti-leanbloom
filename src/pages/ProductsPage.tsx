@@ -23,7 +23,7 @@ export const ProductsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All Categories');
   const [selectedSpecFilter, setSelectedSpecFilter] = useState<string>('all');
-  const [maxPrice, setMaxPrice] = useState<number>(260);
+  const [maxPrice, setMaxPrice] = useState<number>(500);
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'name-asc'>('featured');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -123,21 +123,21 @@ export const ProductsPage: React.FC = () => {
     setSearchQuery('');
     setSelectedCategory('All Categories');
     setSelectedSpecFilter('all');
-    setMaxPrice(260);
+    setMaxPrice(500);
     setSortBy('featured');
   };
 
   return (
-    <div className="min-h-screen bg-[#F6F8F7] pt-28 pb-20">
+    <div className="min-h-screen bg-[#F4F8FA] pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Page Header */}
         <div className="mb-8 space-y-4">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <span className="text-xs font-mono-code text-[#0E9F8E] font-bold uppercase tracking-wider">
+              <span className="text-xs font-mono-code text-[#00B8AA] font-bold uppercase tracking-wider">
                 Active Catalog Inventory
               </span>
-              <h1 className="text-3xl sm:text-4xl font-bold font-sora text-[#0B1F2A] mt-1">
+              <h1 className="text-3xl sm:text-4xl font-bold font-sora text-[#002050] mt-1">
                 Wholesale Research Peptides
               </h1>
               <p className="text-xs sm:text-sm text-[#5B6B73] mt-1">
@@ -147,12 +147,12 @@ export const ProductsPage: React.FC = () => {
 
             {/* Total count badge & Expand/Collapse controls */}
             <div className="flex items-center gap-3">
-              <span className="font-mono-code text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-[#E4EAE8] text-[#0B1F2A] shadow-2xs">
+              <span className="font-mono-code text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-[#E2E8EE] text-[#002050] shadow-2xs">
                 {filteredProducts.length} products • {groupedProducts.length} groups
               </span>
               <button
                 onClick={handleExpandAll}
-                className="text-xs text-[#0E9F8E] hover:underline font-semibold"
+                className="text-xs text-[#00B8AA] hover:underline font-semibold"
               >
                 Expand all
               </button>
@@ -167,7 +167,7 @@ export const ProductsPage: React.FC = () => {
           </div>
 
           {/* Search Bar & Primary Category Chips */}
-          <div className="bg-white p-3 sm:p-4 rounded-3xl border border-[#E4EAE8] shadow-xs space-y-3">
+          <div className="bg-white p-3 sm:p-4 rounded-3xl border border-[#E2E8EE] shadow-xs space-y-3">
             <div className="flex flex-col sm:flex-row items-center gap-3">
               {/* Search Input */}
               <div className="relative flex-1 w-full">
@@ -177,7 +177,7 @@ export const ProductsPage: React.FC = () => {
                   placeholder="Search by product name, specification, sequence, or SKU..."
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#F6F8F7] border border-[#E4EAE8] text-xs sm:text-sm font-inter text-[#0B1F2A] placeholder:text-slate-400 focus:bg-white transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#F4F8FA] border border-[#E2E8EE] text-xs sm:text-sm font-inter text-[#002050] placeholder:text-slate-400 focus:bg-white transition-colors"
                 />
               </div>
 
@@ -185,9 +185,9 @@ export const ProductsPage: React.FC = () => {
               <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
                 <button
                   onClick={() => setMobileFilterOpen(prev => !prev)}
-                  className="lg:hidden px-3 py-2 rounded-2xl bg-[#F6F8F7] border border-[#E4EAE8] text-xs font-semibold flex items-center gap-1.5 text-[#0B1F2A]"
+                  className="lg:hidden px-3 py-2 rounded-2xl bg-[#F4F8FA] border border-[#E2E8EE] text-xs font-semibold flex items-center gap-1.5 text-[#002050]"
                 >
-                  <Filter className="w-3.5 h-3.5 text-[#0E9F8E]" />
+                  <Filter className="w-3.5 h-3.5 text-[#00B8AA]" />
                   <span>Filters</span>
                 </button>
 
@@ -195,7 +195,7 @@ export const ProductsPage: React.FC = () => {
                   <select
                     value={sortBy}
                     onChange={e => setSortBy(e.target.value as any)}
-                    className="px-3 py-2 rounded-2xl bg-[#F6F8F7] border border-[#E4EAE8] text-xs font-semibold text-[#0B1F2A]"
+                    className="px-3 py-2 rounded-2xl bg-[#F4F8FA] border border-[#E2E8EE] text-xs font-semibold text-[#002050]"
                   >
                     <option value="featured">Sort: Featured</option>
                     <option value="price-asc">Price: Low to High</option>
@@ -203,11 +203,11 @@ export const ProductsPage: React.FC = () => {
                     <option value="name-asc">Name: A to Z</option>
                   </select>
 
-                  <div className="flex items-center border border-[#E4EAE8] rounded-2xl bg-[#F6F8F7] p-0.5">
+                  <div className="flex items-center border border-[#E2E8EE] rounded-2xl bg-[#F4F8FA] p-0.5">
                     <button
                       onClick={() => setViewMode('grid')}
                       className={`p-1.5 rounded-xl transition-colors ${
-                        viewMode === 'grid' ? 'bg-white shadow-2xs text-[#0B1F2A]' : 'text-slate-400'
+                        viewMode === 'grid' ? 'bg-white shadow-2xs text-[#002050]' : 'text-slate-400'
                       }`}
                       title="Grid View"
                     >
@@ -216,7 +216,7 @@ export const ProductsPage: React.FC = () => {
                     <button
                       onClick={() => setViewMode('list')}
                       className={`p-1.5 rounded-xl transition-colors ${
-                        viewMode === 'list' ? 'bg-white shadow-2xs text-[#0B1F2A]' : 'text-slate-400'
+                        viewMode === 'list' ? 'bg-white shadow-2xs text-[#002050]' : 'text-slate-400'
                       }`}
                       title="List View"
                     >
@@ -237,8 +237,8 @@ export const ProductsPage: React.FC = () => {
                     onClick={() => setSelectedCategory(cat)}
                     className={`px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
                       isSelected
-                        ? 'bg-[#0B1F2A] text-white font-semibold shadow-xs'
-                        : 'bg-[#F6F8F7] hover:bg-slate-200 text-[#5B6B73] border border-[#E4EAE8]'
+                        ? 'bg-[#002050] text-white font-semibold shadow-xs'
+                        : 'bg-[#F4F8FA] hover:bg-slate-200 text-[#5B6B73] border border-[#E2E8EE]'
                     }`}
                   >
                     {cat}
@@ -253,18 +253,18 @@ export const ProductsPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Sticky Filter Sidebar */}
           <aside
-            className={`lg:col-span-3 lg:sticky lg:top-24 bg-white rounded-3xl p-6 border border-[#E4EAE8] shadow-xs space-y-6 ${
+            className={`lg:col-span-3 lg:sticky lg:top-24 bg-white rounded-3xl p-6 border border-[#E2E8EE] shadow-xs space-y-6 ${
               mobileFilterOpen ? 'block' : 'hidden lg:block'
             }`}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-[#E4EAE8]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8EE]">
               <div className="flex items-center gap-2">
-                <SlidersHorizontal className="w-4 h-4 text-[#0E9F8E]" />
-                <h3 className="font-sora font-bold text-sm text-[#0B1F2A]">Refine Catalog</h3>
+                <SlidersHorizontal className="w-4 h-4 text-[#00B8AA]" />
+                <h3 className="font-sora font-bold text-sm text-[#002050]">Refine Catalog</h3>
               </div>
               <button
                 onClick={resetFilters}
-                className="text-xs text-[#0E9F8E] hover:underline flex items-center gap-1 font-semibold"
+                className="text-xs text-[#00B8AA] hover:underline flex items-center gap-1 font-semibold"
               >
                 <RotateCcw className="w-3 h-3" /> Reset
               </button>
@@ -272,7 +272,7 @@ export const ProductsPage: React.FC = () => {
 
             {/* Spec/Size Filter */}
             <div className="space-y-2">
-              <label className="text-xs font-sora font-semibold text-[#0B1F2A] block uppercase tracking-wider">
+              <label className="text-xs font-sora font-semibold text-[#002050] block uppercase tracking-wider">
                 Vial Specification / Mass
               </label>
               <div className="grid grid-cols-3 gap-1.5">
@@ -289,8 +289,8 @@ export const ProductsPage: React.FC = () => {
                     onClick={() => setSelectedSpecFilter(item.val)}
                     className={`py-1.5 px-2 rounded-xl text-xs font-mono-code font-medium border text-center transition-colors ${
                       selectedSpecFilter === item.val
-                        ? 'bg-[#E7F6F3] border-[#0E9F8E] text-[#0E9F8E] font-bold'
-                        : 'border-[#E4EAE8] text-[#5B6B73] hover:bg-[#F6F8F7]'
+                        ? 'bg-[#E6F7F5] border-[#00B8AA] text-[#00B8AA] font-bold'
+                        : 'border-[#E2E8EE] text-[#5B6B73] hover:bg-[#F4F8FA]'
                     }`}
                   >
                     {item.label}
@@ -301,33 +301,33 @@ export const ProductsPage: React.FC = () => {
 
             {/* Price Range Slider */}
             <div className="space-y-2">
-              <div className="flex justify-between items-center text-xs font-sora font-semibold text-[#0B1F2A]">
+              <div className="flex justify-between items-center text-xs font-sora font-semibold text-[#002050]">
                 <span className="uppercase tracking-wider">Max Unit Price</span>
-                <span className="font-mono-code text-[#0E9F8E]">${maxPrice}</span>
+                <span className="font-mono-code text-[#00B8AA]">${maxPrice}</span>
               </div>
               <input
                 type="range"
-                min="40"
-                max="260"
-                step="5"
+                min="7"
+                max="500"
+                step="1"
                 value={maxPrice}
                 onChange={e => setMaxPrice(Number(e.target.value))}
-                className="w-full accent-[#0E9F8E] cursor-pointer"
+                className="w-full accent-[#00B8AA] cursor-pointer"
               />
               <div className="flex justify-between text-[10px] text-slate-400 font-mono-code">
-                <span>$40</span>
-                <span>$150</span>
-                <span>$260+</span>
+                <span>$7</span>
+                <span>$250</span>
+                <span>$500+</span>
               </div>
             </div>
 
             {/* Purity Guarantee Callout */}
-            <div className="p-4 rounded-2xl bg-[#E7F6F3] border border-[#0E9F8E]/20 text-xs space-y-1.5">
-              <div className="flex items-center gap-1.5 text-[#0E9F8E] font-sora font-bold">
+            <div className="p-4 rounded-2xl bg-[#E6F7F5] border border-[#00B8AA]/20 text-xs space-y-1.5">
+              <div className="flex items-center gap-1.5 text-[#00B8AA] font-sora font-bold">
                 <Sparkles className="w-4 h-4" />
                 <span>Purity Guarantee</span>
               </div>
-              <p className="text-[#0B1F2A] leading-relaxed text-[11px]">
+              <p className="text-[#002050] leading-relaxed text-[11px]">
                 Every SKU is strictly synthesized in ISO 9001:2015 cGMP suites and authenticated by independent UHPLC and mass spectrometry.
               </p>
             </div>
@@ -336,14 +336,14 @@ export const ProductsPage: React.FC = () => {
           {/* Right Product Grid / List Results */}
           <main className="lg:col-span-9 space-y-6">
             {groupedProducts.length === 0 ? (
-              <div className="p-12 text-center bg-white rounded-3xl border border-[#E4EAE8]">
-                <h4 className="font-sora font-bold text-base text-[#0B1F2A]">No Matching Products Found</h4>
+              <div className="p-12 text-center bg-white rounded-3xl border border-[#E2E8EE]">
+                <h4 className="font-sora font-bold text-base text-[#002050]">No Matching Products Found</h4>
                 <p className="text-xs text-[#5B6B73] mt-1 max-w-sm mx-auto">
                   Try adjusting your search criteria, clearing the specification filter, or resetting price bounds.
                 </p>
                 <button
                   onClick={resetFilters}
-                  className="mt-4 px-6 py-2.5 rounded-full bg-[#0B1F2A] text-white font-sora text-xs font-semibold hover:bg-[#07131A]"
+                  className="mt-4 px-6 py-2.5 rounded-full bg-[#002050] text-white font-sora text-xs font-semibold hover:bg-[#001538]"
                 >
                   Clear All Filters
                 </button>
@@ -356,7 +356,7 @@ export const ProductsPage: React.FC = () => {
                   return (
                     <div
                       key={group.name}
-                      className="bg-white rounded-3xl p-6 border border-[#E4EAE8] shadow-2xs space-y-4"
+                      className="bg-white rounded-3xl p-6 border border-[#E2E8EE] shadow-2xs space-y-4"
                     >
                       {/* Group Header */}
                       <div
@@ -365,7 +365,7 @@ export const ProductsPage: React.FC = () => {
                       >
                         <div className="flex items-center gap-3">
                           <button
-                            className="p-1 rounded-full bg-[#F6F8F7] text-slate-500 group-hover:text-black group-hover:bg-[#E7F6F3]"
+                            className="p-1 rounded-full bg-[#F4F8FA] text-slate-500 group-hover:text-black group-hover:bg-[#E6F7F5]"
                             aria-label={`Toggle group ${group.name}`}
                           >
                             {isExpanded ? (
@@ -376,10 +376,10 @@ export const ProductsPage: React.FC = () => {
                           </button>
                           <div>
                             <div className="flex items-center gap-2">
-                              <h3 className="font-sora font-bold text-lg text-[#0B1F2A] group-hover:text-[#0E9F8E] transition-colors">
+                              <h3 className="font-sora font-bold text-lg text-[#002050] group-hover:text-[#00B8AA] transition-colors">
                                 {group.name}
                               </h3>
-                              <span className="text-[11px] font-mono-code px-2 py-0.5 rounded-full bg-[#F6F8F7] border border-[#E4EAE8] text-[#5B6B73]">
+                              <span className="text-[11px] font-mono-code px-2 py-0.5 rounded-full bg-[#F4F8FA] border border-[#E2E8EE] text-[#5B6B73]">
                                 {group.variants.length} {group.variants.length === 1 ? 'spec' : 'specs'}
                               </span>
                             </div>
@@ -389,7 +389,7 @@ export const ProductsPage: React.FC = () => {
                           </div>
                         </div>
 
-                        <span className="text-xs font-mono-code text-[#0E9F8E] font-semibold">
+                        <span className="text-xs font-mono-code text-[#00B8AA] font-semibold">
                           From ${Math.min(...group.variants.map(v => v.price))} /pack
                         </span>
                       </div>
@@ -412,10 +412,10 @@ export const ProductsPage: React.FC = () => {
               </div>
             ) : (
               /* LIST VIEW */
-              <div className="bg-white rounded-3xl border border-[#E4EAE8] overflow-hidden shadow-2xs">
+              <div className="bg-white rounded-3xl border border-[#E2E8EE] overflow-hidden shadow-2xs">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-[#F6F8F7] border-b border-[#E4EAE8] text-[11px] font-semibold text-[#5B6B73] uppercase tracking-wider font-sora">
+                    <thead className="bg-[#F4F8FA] border-b border-[#E2E8EE] text-[11px] font-semibold text-[#5B6B73] uppercase tracking-wider font-sora">
                       <tr>
                         <th className="py-3 px-4">SKU</th>
                         <th className="py-3 px-4">Product Formulation</th>
@@ -425,7 +425,7 @@ export const ProductsPage: React.FC = () => {
                         <th className="py-3 px-4 text-right">Action</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#E4EAE8] font-inter">
+                    <tbody className="divide-y divide-[#E2E8EE] font-inter">
                       {filteredProducts.map(product => {
                         const isAdded = addedItemIds[product.id];
                         return (
@@ -434,11 +434,11 @@ export const ProductsPage: React.FC = () => {
                             onClick={() => setSelectedProduct(product)}
                             className="hover:bg-slate-50/80 cursor-pointer transition-colors"
                           >
-                            <td className="py-3.5 px-4 font-mono-code font-bold text-[#0B1F2A]">
+                            <td className="py-3.5 px-4 font-mono-code font-bold text-[#002050]">
                               {product.sku}
                             </td>
                             <td className="py-3.5 px-4">
-                              <span className="font-sora font-bold text-xs text-[#0B1F2A] block">
+                              <span className="font-sora font-bold text-xs text-[#002050] block">
                                 {product.name}
                               </span>
                               <span className="text-[11px] text-[#5B6B73] line-clamp-1">
@@ -448,10 +448,10 @@ export const ProductsPage: React.FC = () => {
                             <td className="py-3.5 px-4 font-mono-code text-[#5B6B73]">
                               {product.spec}
                             </td>
-                            <td className="py-3.5 px-4 font-mono-code text-[#0E9F8E] font-semibold">
+                            <td className="py-3.5 px-4 font-mono-code text-[#00B8AA] font-semibold">
                               {product.purity}
                             </td>
-                            <td className="py-3.5 px-4 font-mono-code font-bold text-[#0B1F2A] text-sm">
+                            <td className="py-3.5 px-4 font-mono-code font-bold text-[#002050] text-sm">
                               ${product.price}
                               <span className="text-[10px] text-slate-400 font-normal"> /pack</span>
                             </td>
@@ -461,7 +461,7 @@ export const ProductsPage: React.FC = () => {
                                 className={`px-3 py-1.5 rounded-full font-sora text-xs font-semibold inline-flex items-center gap-1.5 transition-all ${
                                   isAdded
                                     ? 'bg-emerald-600 text-white'
-                                    : 'bg-[#0B1F2A] hover:bg-[#07131A] text-white'
+                                    : 'bg-[#002050] hover:bg-[#001538] text-white'
                                 }`}
                               >
                                 {isAdded ? (
@@ -471,7 +471,7 @@ export const ProductsPage: React.FC = () => {
                                   </>
                                 ) : (
                                   <>
-                                    <Plus className="w-3 h-3 text-[#5EEAD4]" />
+                                    <Plus className="w-3 h-3 text-[#5EC8E8]" />
                                     <span>Add</span>
                                   </>
                                 )}

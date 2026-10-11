@@ -18,12 +18,12 @@ export const ToastContainer: React.FC = () => {
             key={toast.id}
             role="status"
             aria-live="polite"
-            className="pointer-events-auto bg-[#0B1F2A] text-white p-4 rounded-2xl shadow-2xl border border-[#0E9F8E]/30 flex items-start gap-3 backdrop-blur-md animate-in fade-in slide-in-from-bottom-3 duration-200"
+            className="pointer-events-auto bg-[#002050] text-white p-4 rounded-2xl shadow-2xl border border-[#00B8AA]/30 flex items-start gap-3 backdrop-blur-md animate-in fade-in slide-in-from-bottom-3 duration-200"
           >
             <div className="shrink-0 mt-0.5">
-              {isSuccess && <CheckCircle2 className="w-5 h-5 text-[#5EEAD4]" />}
+              {isSuccess && <CheckCircle2 className="w-5 h-5 text-[#5EC8E8]" />}
               {isError && <AlertCircle className="w-5 h-5 text-red-400" />}
-              {!isSuccess && !isError && <Info className="w-5 h-5 text-[#5EEAD4]" />}
+              {!isSuccess && !isError && <Info className="w-5 h-5 text-[#5EC8E8]" />}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold font-sora text-white leading-tight">{toast.title}</p>

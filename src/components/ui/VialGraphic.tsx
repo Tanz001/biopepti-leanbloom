@@ -11,11 +11,11 @@ interface VialGraphicProps {
 }
 
 export const VialGraphic: React.FC<VialGraphicProps> = ({
-  color = '#0E9F8E',
-  accent = '#5EEAD4',
+  color = '#00B8AA',
+  accent = '#5EC8E8',
   size = 180,
   className = '',
-  label = 'LUMORA LABS',
+  label = 'BIOPEPTI',
   sublabel = 'RESEARCH PEPTIDE',
   purity = '≥99% HPLC'
 }) => {
@@ -62,7 +62,7 @@ export const VialGraphic: React.FC<VialGraphicProps> = ({
             <stop offset="0%" stopColor={color} />
             <stop offset="40%" stopColor={accent} />
             <stop offset="80%" stopColor={color} />
-            <stop offset="100%" stopColor="#0B1F2A" />
+            <stop offset="100%" stopColor="#002050" />
           </linearGradient>
 
           {/* Label Background */}
@@ -73,7 +73,7 @@ export const VialGraphic: React.FC<VialGraphicProps> = ({
         </defs>
 
         {/* Ambient shadow underneath */}
-        <ellipse cx="60" cy="157" rx="35" ry="5" fill="#0B1F2A" fillOpacity="0.12" />
+        <ellipse cx="60" cy="157" rx="35" ry="5" fill="#002050" fillOpacity="0.12" />
 
         {/* --- VIAL BODY (GLASS) --- */}
         {/* Main Glass Outer Border & Reflection */}
@@ -134,10 +134,10 @@ export const VialGraphic: React.FC<VialGraphicProps> = ({
           fill="url(#cakeGrad)"
         />
         {/* Cake textured pores */}
-        <circle cx="40" cy="140" r="1" fill="#0E9F8E" fillOpacity="0.3" />
-        <circle cx="55" cy="138" r="1.2" fill="#0E9F8E" fillOpacity="0.2" />
-        <circle cx="70" cy="142" r="0.8" fill="#0E9F8E" fillOpacity="0.35" />
-        <circle cx="80" cy="139" r="1.1" fill="#0E9F8E" fillOpacity="0.25" />
+        <circle cx="40" cy="140" r="1" fill="#00B8AA" fillOpacity="0.3" />
+        <circle cx="55" cy="138" r="1.2" fill="#00B8AA" fillOpacity="0.2" />
+        <circle cx="70" cy="142" r="0.8" fill="#00B8AA" fillOpacity="0.35" />
+        <circle cx="80" cy="139" r="1.1" fill="#00B8AA" fillOpacity="0.25" />
 
         {/* Clinical Label */}
         <g>
@@ -159,7 +159,7 @@ export const VialGraphic: React.FC<VialGraphicProps> = ({
             x="60"
             y="67"
             textAnchor="middle"
-            fill="#0B1F2A"
+            fill="#002050"
             fontSize="6"
             fontWeight="bold"
             letterSpacing="0.4"
@@ -172,7 +172,7 @@ export const VialGraphic: React.FC<VialGraphicProps> = ({
             x="60"
             y="76"
             textAnchor="middle"
-            fill="#0E9F8E"
+            fill="#00B8AA"
             fontSize="4.8"
             fontWeight="600"
             fontFamily="monospace"
@@ -184,12 +184,12 @@ export const VialGraphic: React.FC<VialGraphicProps> = ({
           <line x1="33" y1="80" x2="87" y2="80" stroke="#E2E8F0" strokeWidth="0.6" />
 
           {/* Purity badge */}
-          <rect x="36" y="85" width="48" height="9" rx="2" fill="#E7F6F3" />
+          <rect x="36" y="85" width="48" height="9" rx="2" fill="#E6F7F5" />
           <text
             x="60"
             y="91.5"
             textAnchor="middle"
-            fill="#0B1F2A"
+            fill="#002050"
             fontSize="4.6"
             fontWeight="bold"
             fontFamily="monospace"
@@ -203,7 +203,7 @@ export const VialGraphic: React.FC<VialGraphicProps> = ({
           <rect x="34" y="107" width="26" height="2" rx="1" fill="#94A3B8" fillOpacity="0.5" />
 
           {/* 2D Data Matrix code placeholder */}
-          <rect x="74" y="98" width="12" height="12" rx="1" fill="#0B1F2A" fillOpacity="0.85" />
+          <rect x="74" y="98" width="12" height="12" rx="1" fill="#002050" fillOpacity="0.85" />
           <rect x="76" y="100" width="3" height="3" fill="#FFFFFF" />
           <rect x="81" y="104" width="3" height="3" fill="#FFFFFF" />
         </g>

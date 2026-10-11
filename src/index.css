@@ -5,12 +5,18 @@
     --font-heading: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
+    --brand-navy: #002050;
+    --brand-teal: #00B8AA;
+    --brand-blue: #0084D1;
+    --brand-cyan: #5EC8E8;
+    --brand-mint: #E6F7F5;
+    --brand-bg: #F4F8FA;
   }
 
   body {
     font-family: var(--font-body);
-    color: #0B1F2A;
-    background-color: #F6F8F7;
+    color: #002050;
+    background-color: #F4F8FA;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
   }
@@ -18,7 +24,7 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     letter-spacing: -0.02em;
-    color: #0B1F2A;
+    color: #002050;
   }
 }
 
@@ -34,12 +40,24 @@
   font-family: var(--font-mono);
 }
 
+/* Brand gradient from logo (teal → cyan → blue) */
+.brand-gradient {
+  background-image: linear-gradient(180deg, #17B79F 0%, #00B8AA 35%, #0289CB 70%, #0064D2 100%);
+}
+
+.brand-gradient-text {
+  background-image: linear-gradient(135deg, #00B8AA 0%, #0084D1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 /* Glassmorphism */
 .glass-nav {
   background: rgba(255, 255, 255, 0.86);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(228, 234, 232, 0.9);
+  border: 1px solid rgba(226, 232, 238, 0.9);
 }
 
 .glass-drawer {
@@ -55,30 +73,30 @@
 
 .card-lift:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 35px -10px rgba(11, 31, 42, 0.08), 0 8px 16px -6px rgba(11, 31, 42, 0.04);
+  box-shadow: 0 20px 35px -10px rgba(0, 32, 80, 0.08), 0 8px 16px -6px rgba(0, 32, 80, 0.04);
 }
 
-/* Subtle Mesh Gradient Backgrounds */
+/* Subtle Mesh Gradient Backgrounds — logo teal/blue wash */
 .bg-mesh-soft {
-  background-color: #F6F8F7;
+  background-color: #F4F8FA;
   background-image: 
-    radial-gradient(at 0% 0%, rgba(231, 246, 243, 0.75) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(94, 234, 212, 0.15) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, rgba(231, 246, 243, 0.5) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(230, 247, 245, 0.9) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(2, 137, 203, 0.12) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(0, 184, 170, 0.12) 0px, transparent 50%);
 }
 
 .bg-mesh-dark {
-  background-color: #0B1F2A;
+  background-color: #002050;
   background-image: 
-    radial-gradient(at 80% 20%, rgba(14, 159, 142, 0.22) 0px, transparent 60%),
-    radial-gradient(at 20% 80%, rgba(94, 234, 212, 0.12) 0px, transparent 50%),
-    radial-gradient(at 50% 50%, rgba(11, 31, 42, 0.9) 0px, transparent 80%);
+    radial-gradient(at 80% 20%, rgba(0, 184, 170, 0.28) 0px, transparent 60%),
+    radial-gradient(at 20% 80%, rgba(0, 132, 209, 0.22) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(0, 32, 80, 0.9) 0px, transparent 80%);
 }
 
 /* Focus Ring */
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px #5EEAD4, 0 0 0 4px rgba(14, 159, 142, 0.2);
+  box-shadow: 0 0 0 2px #5EC8E8, 0 0 0 4px rgba(0, 184, 170, 0.22);
 }
 
 /* Custom scrollbars */
@@ -87,7 +105,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #F6F8F7;
+  background: #F4F8FA;
 }
 ::-webkit-scrollbar-thumb {
   background: #CBD5E1;
@@ -95,4 +113,58 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
+}
+
+/* Landing motion + product rail */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float-soft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-rise {
+  animation: rise-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-rise-delay-1 {
+  animation: rise-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+
+.animate-rise-delay-2 {
+  animation: rise-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
+}
+
+.animate-float-soft {
+  animation: float-soft 5.5s ease-in-out infinite;
+}
+
+.product-rail {
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.product-rail > * {
+  scroll-snap-align: start;
 }

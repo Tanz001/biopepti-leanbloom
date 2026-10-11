@@ -24,7 +24,7 @@ export default function App() {
       <CartProvider>
         <BrowserRouter>
           <ScrollToTop />
-          <div className="min-h-screen flex flex-col bg-[#F6F8F7] text-[#0B1F2A] font-inter">
+          <div className="min-h-screen flex flex-col bg-[#F4F8FA] text-[#002050] font-inter">
             {/* Sticky Floating Navbar */}
             <Navbar />
 

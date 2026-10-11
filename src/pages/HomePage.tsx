@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PRODUCTS_DATA } from '../data/products';
+import { PRODUCTS_DATA, CATALOG_SKU_COUNT } from '../data/products';
 import { ProductCard } from '../components/products/ProductCard';
 import { ProductDetailModal } from '../components/products/ProductDetailModal';
 import { VialGraphic } from '../components/ui/VialGraphic';
@@ -13,10 +13,10 @@ import {
   FileCheck2,
   Globe2,
   MessageSquare,
-  Sparkles,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Layers,
-  Clock,
   FlaskConical,
   Database,
   Building2,
@@ -26,9 +26,23 @@ import {
 export const HomePage: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const productRailRef = useRef<HTMLDivElement>(null);
 
-  // 8 featured products
-  const featuredProducts = PRODUCTS_DATA.slice(0, 8);
+  // Featured SKUs from the wholesale kit list
+  const featuredSkus = [
+    'TR15', 'RT10', 'SM10', 'BC10', 'CU100', 'MS10', 'ET10', 'IP10',
+    'BT10', 'CND5', 'NJ500', 'SK10'
+  ];
+  const featuredProducts = featuredSkus
+    .map(sku => PRODUCTS_DATA.find(p => p.sku === sku))
+    .filter((p): p is Product => Boolean(p));
+
+  const scrollProducts = (direction: 'left' | 'right') => {
+    const rail = productRailRef.current;
+    if (!rail) return;
+    const amount = Math.min(rail.clientWidth * 0.85, 360);
+    rail.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' });
+  };
 
   const faqs = [
     {
@@ -54,128 +68,101 @@ export const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F6F8F7]">
+    <div className="min-h-screen bg-[#F4F8FA]">
       {/* 1. HERO SECTION */}
-      <section className="relative pt-32 pb-20 md:pt-36 md:pb-28 overflow-hidden bg-mesh-soft">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            {/* Hero Left Column */}
-            <div className="lg:col-span-7 space-y-6">
-              {/* Pill label */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E7F6F3] border border-[#0E9F8E]/30 text-[#0E9F8E] text-xs font-semibold font-sora shadow-2xs">
-                <span className="w-2 h-2 rounded-full bg-[#0E9F8E] animate-pulse" />
-                <span>Wholesale research peptide supply</span>
+      <section className="relative pt-28 pb-16 md:pt-32 md:pb-24 overflow-hidden bg-mesh-soft">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-24 -left-16 w-[28rem] h-[28rem] rounded-full bg-[#00B8AA]/10 blur-3xl" />
+          <div className="absolute top-20 right-0 w-[22rem] h-[22rem] rounded-full bg-[#0084D1]/10 blur-3xl" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+            {/* Hero Left */}
+            <div className="lg:col-span-7 space-y-7">
+              <div className="animate-rise flex items-center gap-3">
+                <img src="/logo-mark.png" alt="" className="h-12 w-auto object-contain" />
+                <div>
+                  <p className="font-sora font-extrabold text-2xl sm:text-3xl text-[#002050] tracking-tight leading-none">
+                    Biopepti
+                  </p>
+                  <p className="text-xs font-mono-code text-[#00B8AA] font-semibold mt-1 tracking-wide">
+                    WHOLESALE RESEARCH PEPTIDES
+                  </p>
+                </div>
               </div>
 
-              {/* H1 */}
-              <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-bold text-[#0B1F2A] leading-[1.12] tracking-tight font-sora">
-                Research peptide supply, built for serious wholesale buyers.
+              <h1 className="animate-rise-delay-1 text-4xl sm:text-5xl lg:text-[3.4rem] font-bold text-[#002050] leading-[1.1] tracking-tight font-sora max-w-xl">
+                Pure kits. Clear pricing. Built for wholesale buyers.
               </h1>
 
-              {/* Paragraph */}
-              <p className="text-base sm:text-lg text-[#5B6B73] max-w-2xl font-inter leading-relaxed">
-                Direct cGMP laboratory synthesis, guaranteed 99%+ HPLC/MS verified purity, and instant volume quotation. Powering academic institutions, biotech enterprises, and private-label distributors globally.
+              <p className="animate-rise-delay-2 text-base sm:text-lg text-[#5B6B73] max-w-xl font-inter leading-relaxed">
+                {CATALOG_SKU_COUNT} HPLC/MS-verified SKUs with instant quotations and cold-chain dispatch worldwide.
               </p>
 
-              {/* Two CTAs */}
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <Link
-                  to="/quote"
-                  className="px-7 py-3.5 rounded-full bg-[#0B1F2A] hover:bg-[#07131A] text-white font-sora font-semibold text-sm flex items-center gap-2 group transition-all shadow-md active:scale-95"
-                >
-                  <span>Build Quote</span>
-                  <ArrowRight className="w-4 h-4 text-[#5EEAD4] group-hover:translate-x-1 transition-transform" />
-                </Link>
-
+              <div className="animate-rise-delay-2 flex flex-wrap items-center gap-3 pt-1">
                 <Link
                   to="/products"
-                  className="px-7 py-3.5 rounded-full bg-white hover:bg-slate-50 text-[#0B1F2A] font-sora font-semibold text-sm border border-[#E4EAE8] transition-all shadow-2xs hover:border-[#0E9F8E]"
+                  className="px-7 py-3.5 rounded-full bg-[#002050] hover:bg-[#001538] text-white font-sora font-semibold text-sm flex items-center gap-2 group transition-all shadow-md active:scale-95"
                 >
-                  View Catalog (179 SKUs)
+                  <span>Browse Catalog</span>
+                  <ArrowRight className="w-4 h-4 text-[#5EC8E8] group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <Link
+                  to="/quote"
+                  className="px-7 py-3.5 rounded-full bg-white hover:bg-slate-50 text-[#002050] font-sora font-semibold text-sm border border-[#E2E8EE] transition-all hover:border-[#00B8AA]"
+                >
+                  Build a Quote
                 </Link>
               </div>
 
-              {/* Trust Row */}
-              <div className="pt-6 border-t border-[#E4EAE8] flex flex-wrap items-center gap-y-3 gap-x-6 text-xs text-[#5B6B73] font-medium font-inter">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#0E9F8E]" />
-                  <span>Wholesale catalog</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#0E9F8E]" />
-                  <span>Branded COA</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#0E9F8E]" />
-                  <span>Private-label ready</span>
-                </div>
+              <div className="animate-rise-delay-2 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-[#5B6B73] font-medium">
+                <span className="inline-flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#00B8AA]" />
+                  ≥99% purity kits
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#00B8AA]" />
+                  Batch COA available
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#00B8AA]" />
+                  OEM / private label
+                </span>
               </div>
             </div>
 
-            {/* Hero Right Column: Floating 3 Vial Composition */}
-            <div className="lg:col-span-5 relative flex items-center justify-center">
-              {/* Outer decorative glow */}
-              <div className="absolute w-80 h-80 bg-[#5EEAD4]/20 rounded-full blur-3xl -z-10" />
+            {/* Hero Right visual */}
+            <div className="lg:col-span-5 relative flex items-center justify-center animate-rise-delay-2">
+              <div className="absolute w-72 h-72 sm:w-80 sm:h-80 bg-gradient-to-br from-[#00B8AA]/25 via-[#5EC8E8]/15 to-[#0084D1]/20 rounded-full blur-3xl -z-10" />
 
-              <div className="relative w-full max-w-md h-[440px] flex items-center justify-center">
-                {/* Vial 1 (Left background float) */}
-                <div className="absolute -left-2 top-8 w-44 p-4 rounded-3xl bg-white/90 backdrop-blur-md border border-[#E4EAE8] shadow-xl transform -rotate-6 hover:rotate-0 transition-all duration-500 z-10 card-lift">
-                  <div className="h-32 bg-gradient-to-b from-[#E7F6F3] to-white rounded-2xl flex items-center justify-center">
-                    <VialGraphic size={75} color="#0E9F8E" label="LUM" sublabel="BPC10" purity="99.7%" />
+              <div className="relative w-full max-w-sm">
+                <div className="animate-float-soft rounded-[2rem] bg-white/90 border border-[#E2E8EE] shadow-2xl p-6 sm:p-8 backdrop-blur-sm">
+                  <div className="h-56 sm:h-64 rounded-3xl bg-gradient-to-b from-[#E6F7F5] via-white to-[#F4F8FA] flex items-center justify-center border border-[#E2E8EE]/70">
+                    <VialGraphic size={140} color="#00B8AA" label="BIOPEPTI" sublabel="TR15" purity="≥99%" />
                   </div>
-                  <div className="mt-3">
-                    <span className="font-mono-code text-[10px] text-[#5B6B73]">BPC-157 10mg</span>
-                    <div className="flex justify-between items-center mt-0.5">
-                      <span className="font-sora font-bold text-xs text-[#0B1F2A]">$98 /pack</span>
-                      <span className="text-[10px] text-emerald-600 font-mono-code font-bold">99.7%</span>
+                  <div className="mt-5 flex items-end justify-between gap-3">
+                    <div>
+                      <p className="font-mono-code text-[11px] font-bold text-[#00B8AA]">TR15 · 15mg×10</p>
+                      <h3 className="font-sora font-bold text-lg text-[#002050]">Tirzepatide</h3>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[10px] uppercase tracking-wider text-[#5B6B73] font-semibold">Kit price</p>
+                      <p className="font-mono-code font-bold text-xl text-[#002050]">$41</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Vial 2 (Center prominent) */}
-                <div className="w-52 p-5 rounded-3xl bg-white border border-[#0E9F8E]/30 shadow-2xl z-20 card-lift transform hover:scale-105 transition-all duration-300">
-                  <div className="h-44 bg-gradient-to-b from-[#E7F6F3] to-[#F6F8F7] rounded-2xl flex items-center justify-center relative overflow-hidden">
-                    <VialGraphic size={105} color="#0E9F8E" label="LUMORA" sublabel="TZ15" purity="99.8%" />
-                    <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-[#0B1F2A] text-[#5EEAD4] text-[9px] font-mono-code font-bold">
-                      IN STOCK
-                    </span>
-                  </div>
-                  <div className="mt-3 space-y-1">
-                    <span className="font-mono-code text-[11px] font-bold text-[#0E9F8E]">TZ15 • 15mg*10</span>
-                    <h3 className="font-sora font-bold text-sm text-[#0B1F2A]">Tirzepatide Pure</h3>
-                    <div className="flex items-center justify-between pt-1">
-                      <span className="font-mono-code font-bold text-sm text-[#0B1F2A]">$145</span>
-                      <span className="text-[10px] bg-[#E7F6F3] text-[#0E9F8E] px-2 py-0.5 rounded-full font-semibold">
-                        USP Grade
-                      </span>
-                    </div>
-                  </div>
+                <div className="absolute -left-3 sm:-left-6 top-10 w-28 sm:w-32 rounded-2xl bg-white border border-[#E2E8EE] shadow-lg p-3 -rotate-6">
+                  <VialGraphic size={56} color="#00B8AA" label="BIO" sublabel="BC10" purity="≥99%" />
+                  <p className="mt-1 font-mono-code text-[10px] text-[#5B6B73]">BPC-157</p>
+                  <p className="font-sora font-bold text-xs text-[#002050]">$46</p>
                 </div>
 
-                {/* Vial 3 (Right background float) */}
-                <div className="absolute -right-2 bottom-6 w-44 p-4 rounded-3xl bg-white/90 backdrop-blur-md border border-[#E4EAE8] shadow-xl transform rotate-6 hover:rotate-0 transition-all duration-500 z-10 card-lift">
-                  <div className="h-32 bg-gradient-to-b from-[#E7F6F3] to-white rounded-2xl flex items-center justify-center">
-                    <VialGraphic size={75} color="#7C3AED" label="LUM" sublabel="GHK100" purity="99.6%" />
-                  </div>
-                  <div className="mt-3">
-                    <span className="font-mono-code text-[10px] text-[#5B6B73]">GHK-Cu 100mg</span>
-                    <div className="flex justify-between items-center mt-0.5">
-                      <span className="font-sora font-bold text-xs text-[#0B1F2A]">$110 /pack</span>
-                      <span className="text-[10px] text-[#7C3AED] font-mono-code font-bold">99.6%</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Glass stat chip 1 (Top right) */}
-                <div className="absolute top-2 right-4 z-30 px-3.5 py-2 rounded-2xl glass-nav shadow-lg flex items-center gap-2 border border-[#E4EAE8] animate-bounce duration-1000">
-                  <Sparkles className="w-4 h-4 text-[#0E9F8E]" />
-                  <span className="text-xs font-sora font-bold text-[#0B1F2A]">99%+ HPLC/MS verified</span>
-                </div>
-
-                {/* Glass stat chip 2 (Bottom left) */}
-                <div className="absolute bottom-2 left-4 z-30 px-3.5 py-2 rounded-2xl glass-nav shadow-lg flex items-center gap-2 border border-[#E4EAE8]">
-                  <Clock className="w-4 h-4 text-[#0E9F8E]" />
-                  <span className="text-xs font-sora font-bold text-[#0B1F2A]">24h quote response</span>
+                <div className="absolute -right-2 sm:-right-5 bottom-8 w-28 sm:w-32 rounded-2xl bg-white border border-[#E2E8EE] shadow-lg p-3 rotate-6">
+                  <VialGraphic size={56} color="#0084D1" label="BIO" sublabel="CU100" purity="≥99%" />
+                  <p className="mt-1 font-mono-code text-[10px] text-[#5B6B73]">GHK-Cu</p>
+                  <p className="font-sora font-bold text-xs text-[#002050]">$36</p>
                 </div>
               </div>
             </div>
@@ -184,45 +171,45 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 2. STATS STRIP */}
-      <section className="py-8 bg-white border-y border-[#E4EAE8]">
+      <section className="py-8 bg-white border-y border-[#E2E8EE]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#E7F6F3] flex items-center justify-center text-[#0E9F8E] shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-[#E6F7F5] flex items-center justify-center text-[#00B8AA] shrink-0">
                 <Database className="w-6 h-6" />
               </div>
               <div>
-                <span className="font-mono-code text-2xl sm:text-3xl font-extrabold text-[#0B1F2A] block">179</span>
+                <span className="font-mono-code text-2xl sm:text-3xl font-extrabold text-[#002050] block">{CATALOG_SKU_COUNT}</span>
                 <span className="text-xs text-[#5B6B73] font-medium">Catalog SKUs</span>
               </div>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#E7F6F3] flex items-center justify-center text-[#0E9F8E] shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-[#E6F7F5] flex items-center justify-center text-[#00B8AA] shrink-0">
                 <FileCheck2 className="w-6 h-6" />
               </div>
               <div>
-                <span className="font-mono-code text-2xl sm:text-3xl font-extrabold text-[#0B1F2A] block">61</span>
+                <span className="font-mono-code text-2xl sm:text-3xl font-extrabold text-[#002050] block">61</span>
                 <span className="text-xs text-[#5B6B73] font-medium">COA Records Online</span>
               </div>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#E7F6F3] flex items-center justify-center text-[#0E9F8E] shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-[#E6F7F5] flex items-center justify-center text-[#00B8AA] shrink-0">
                 <Layers className="w-6 h-6" />
               </div>
               <div>
-                <span className="font-sora text-base sm:text-lg font-bold text-[#0B1F2A] block">OEM Label</span>
+                <span className="font-sora text-base sm:text-lg font-bold text-[#002050] block">OEM Label</span>
                 <span className="text-xs text-[#5B6B73] font-medium">Full Custom Branding</span>
               </div>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#E7F6F3] flex items-center justify-center text-[#0E9F8E] shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-[#E6F7F5] flex items-center justify-center text-[#00B8AA] shrink-0">
                 <Download className="w-6 h-6" />
               </div>
               <div>
-                <span className="font-sora text-base sm:text-lg font-bold text-[#0B1F2A] block">PDF Quotation</span>
+                <span className="font-sora text-base sm:text-lg font-bold text-[#002050] block">PDF Quotation</span>
                 <span className="text-xs text-[#5B6B73] font-medium">Instant Export Engine</span>
               </div>
             </div>
@@ -231,34 +218,34 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 3. COMPANY PROFILE ("Serving Global Research") */}
-      <section className="py-20 bg-[#F6F8F7]">
+      <section className="py-20 bg-[#F4F8FA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#E4EAE8] shadow-sm">
+          <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#E2E8EE] shadow-sm">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-6 space-y-4">
-                <span className="text-xs font-mono-code text-[#0E9F8E] font-bold uppercase tracking-wider">
+                <span className="text-xs font-mono-code text-[#00B8AA] font-bold uppercase tracking-wider">
                   Global Infrastructure
                 </span>
-                <h2 className="text-3xl font-bold font-sora text-[#0B1F2A]">
+                <h2 className="text-3xl font-bold font-sora text-[#002050]">
                   Serving Global Research with Dual Continental Fulfillment
                 </h2>
                 <p className="text-sm text-[#5B6B73] leading-relaxed font-inter">
-                  Lumora Labs was founded to bridge the gap between industrial peptide synthesis facilities and research procurement teams. Operating dual logistics and customer hubs in the United States and Hong Kong, we provide seamless customs clearance, rapid cold-chain transport, and institutional batch reliability.
+                  Biopepti was founded to bridge the gap between industrial peptide synthesis facilities and research procurement teams. Operating dual logistics and customer hubs in the United States and Hong Kong, we provide seamless customs clearance, rapid cold-chain transport, and institutional batch reliability.
                 </p>
                 <div className="grid grid-cols-2 gap-4 pt-2">
-                  <div className="p-4 rounded-2xl bg-[#F6F8F7] border border-[#E4EAE8]">
+                  <div className="p-4 rounded-2xl bg-[#F4F8FA] border border-[#E2E8EE]">
                     <div className="flex items-center gap-2 mb-1">
-                      <Building2 className="w-4 h-4 text-[#0E9F8E]" />
-                      <span className="font-sora font-bold text-xs text-[#0B1F2A]">Hong Kong SAR</span>
+                      <Building2 className="w-4 h-4 text-[#00B8AA]" />
+                      <span className="font-sora font-bold text-xs text-[#002050]">Hong Kong SAR</span>
                     </div>
                     <p className="text-[11px] text-[#5B6B73]">
                       Central BioHub: Primary API synthesis, cleanroom automated vial filling, HPLC/MS certification.
                     </p>
                   </div>
-                  <div className="p-4 rounded-2xl bg-[#F6F8F7] border border-[#E4EAE8]">
+                  <div className="p-4 rounded-2xl bg-[#F4F8FA] border border-[#E2E8EE]">
                     <div className="flex items-center gap-2 mb-1">
-                      <Globe2 className="w-4 h-4 text-[#0E9F8E]" />
-                      <span className="font-sora font-bold text-xs text-[#0B1F2A]">United States Hub</span>
+                      <Globe2 className="w-4 h-4 text-[#00B8AA]" />
+                      <span className="font-sora font-bold text-xs text-[#002050]">United States Hub</span>
                     </div>
                     <p className="text-[11px] text-[#5B6B73]">
                       South San Francisco, CA: Western hemisphere warehousing, client services, expedited FedEx freight.
@@ -268,9 +255,9 @@ export const HomePage: React.FC = () => {
               </div>
 
               {/* World Map Dot Graphic */}
-              <div className="lg:col-span-6 relative flex items-center justify-center p-6 bg-radial from-[#E7F6F3] to-[#F6F8F7] rounded-2xl border border-[#E4EAE8]">
+              <div className="lg:col-span-6 relative flex items-center justify-center p-6 bg-radial from-[#E6F7F5] to-[#F4F8FA] rounded-2xl border border-[#E2E8EE]">
                 <div className="w-full max-w-lg aspect-video relative flex items-center justify-center">
-                  <svg viewBox="0 0 800 450" className="w-full h-full opacity-35" fill="#0B1F2A">
+                  <svg viewBox="0 0 800 450" className="w-full h-full opacity-35" fill="#002050">
                     {/* Simplified world continent dot matrices */}
                     <circle cx="180" cy="160" r="14" fill="#CBD5E1" />
                     <circle cx="210" cy="180" r="28" fill="#CBD5E1" />
@@ -287,10 +274,10 @@ export const HomePage: React.FC = () => {
                   {/* USA Hub Marker */}
                   <div className="absolute top-[35%] left-[24%] flex flex-col items-center">
                     <span className="relative flex h-4 w-4">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0E9F8E] opacity-75" />
-                      <span className="relative inline-flex rounded-full h-4 w-4 bg-[#0B1F2A] border-2 border-[#5EEAD4]" />
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00B8AA] opacity-75" />
+                      <span className="relative inline-flex rounded-full h-4 w-4 bg-[#002050] border-2 border-[#5EC8E8]" />
                     </span>
-                    <span className="mt-1 px-2 py-0.5 rounded bg-[#0B1F2A] text-white font-mono-code text-[10px] font-bold shadow-xs">
+                    <span className="mt-1 px-2 py-0.5 rounded bg-[#002050] text-white font-mono-code text-[10px] font-bold shadow-xs">
                       USA Hub (San Francisco)
                     </span>
                   </div>
@@ -298,10 +285,10 @@ export const HomePage: React.FC = () => {
                   {/* Hong Kong Hub Marker */}
                   <div className="absolute top-[48%] left-[72%] flex flex-col items-center">
                     <span className="relative flex h-4 w-4">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#5EEAD4] opacity-75" />
-                      <span className="relative inline-flex rounded-full h-4 w-4 bg-[#0E9F8E] border-2 border-white" />
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#5EC8E8] opacity-75" />
+                      <span className="relative inline-flex rounded-full h-4 w-4 bg-[#00B8AA] border-2 border-white" />
                     </span>
-                    <span className="mt-1 px-2 py-0.5 rounded bg-[#0E9F8E] text-white font-mono-code text-[10px] font-bold shadow-xs">
+                    <span className="mt-1 px-2 py-0.5 rounded bg-[#00B8AA] text-white font-mono-code text-[10px] font-bold shadow-xs">
                       Hong Kong Global HQ
                     </span>
                   </div>
@@ -311,7 +298,7 @@ export const HomePage: React.FC = () => {
                     <path
                       d="M 230 170 Q 480 60 610 220"
                       fill="none"
-                      stroke="#0E9F8E"
+                      stroke="#00B8AA"
                       strokeWidth="2"
                       strokeDasharray="6 6"
                       strokeOpacity="0.8"
@@ -325,37 +312,37 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 4. OUR STORY & TIMELINE */}
-      <section className="py-20 bg-white border-b border-[#E4EAE8]">
+      <section className="py-20 bg-white border-b border-[#E2E8EE]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             {/* Left Story Text & Counters */}
             <div className="lg:col-span-5 space-y-6">
-              <span className="text-xs font-mono-code text-[#0E9F8E] font-bold uppercase tracking-wider">
+              <span className="text-xs font-mono-code text-[#00B8AA] font-bold uppercase tracking-wider">
                 A Decade of Innovation
               </span>
-              <h2 className="text-3xl font-bold font-sora text-[#0B1F2A]">
+              <h2 className="text-3xl font-bold font-sora text-[#002050]">
                 From Boutique Synthesis to Global Wholesale Leader
               </h2>
               <p className="text-sm text-[#5B6B73] leading-relaxed font-inter">
-                Founded by organic chemists and analytical biochemists, Lumora Labs started with one clear mandate: bring clinical-grade transparency and modern software efficiency to wholesale peptide supply.
+                Founded by organic chemists and analytical biochemists, Biopepti started with one clear mandate: bring clinical-grade transparency and modern software efficiency to wholesale peptide supply.
               </p>
 
               {/* 4 Big Counters */}
               <div className="grid grid-cols-2 gap-4 pt-4">
-                <div className="p-4 rounded-2xl bg-[#F6F8F7] border border-[#E4EAE8]">
-                  <span className="font-mono-code text-3xl font-bold text-[#0B1F2A] block">10+</span>
+                <div className="p-4 rounded-2xl bg-[#F4F8FA] border border-[#E2E8EE]">
+                  <span className="font-mono-code text-3xl font-bold text-[#002050] block">10+</span>
                   <span className="text-xs text-[#5B6B73] font-medium">Years in Operation</span>
                 </div>
-                <div className="p-4 rounded-2xl bg-[#F6F8F7] border border-[#E4EAE8]">
-                  <span className="font-mono-code text-3xl font-bold text-[#0B1F2A] block">500+</span>
+                <div className="p-4 rounded-2xl bg-[#F4F8FA] border border-[#E2E8EE]">
+                  <span className="font-mono-code text-3xl font-bold text-[#002050] block">500+</span>
                   <span className="text-xs text-[#5B6B73] font-medium">Institutional Clients</span>
                 </div>
-                <div className="p-4 rounded-2xl bg-[#F6F8F7] border border-[#E4EAE8]">
-                  <span className="font-mono-code text-3xl font-bold text-[#0B1F2A] block">60+</span>
+                <div className="p-4 rounded-2xl bg-[#F4F8FA] border border-[#E2E8EE]">
+                  <span className="font-mono-code text-3xl font-bold text-[#002050] block">60+</span>
                   <span className="text-xs text-[#5B6B73] font-medium">Stock Products</span>
                 </div>
-                <div className="p-4 rounded-2xl bg-[#F6F8F7] border border-[#E4EAE8]">
-                  <span className="font-mono-code text-3xl font-bold text-[#0B1F2A] block">40+</span>
+                <div className="p-4 rounded-2xl bg-[#F4F8FA] border border-[#E2E8EE]">
+                  <span className="font-mono-code text-3xl font-bold text-[#002050] block">40+</span>
                   <span className="text-xs text-[#5B6B73] font-medium">Countries Served</span>
                 </div>
               </div>
@@ -363,7 +350,7 @@ export const HomePage: React.FC = () => {
 
             {/* Right Vertical Timeline */}
             <div className="lg:col-span-7">
-              <div className="relative pl-8 sm:pl-10 space-y-8 before:absolute before:left-3.5 sm:before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#E4EAE8]">
+              <div className="relative pl-8 sm:pl-10 space-y-8 before:absolute before:left-3.5 sm:before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#E2E8EE]">
                 {[
                   {
                     year: '2015',
@@ -398,16 +385,16 @@ export const HomePage: React.FC = () => {
                 ].map((item, idx) => (
                   <div key={idx} className="relative group">
                     {/* Circle marker */}
-                    <div className="absolute -left-8 sm:-left-10 top-1 w-5 h-5 rounded-full bg-white border-2 border-[#0E9F8E] flex items-center justify-center group-hover:bg-[#0E9F8E] transition-colors">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#0E9F8E] group-hover:bg-white" />
+                    <div className="absolute -left-8 sm:-left-10 top-1 w-5 h-5 rounded-full bg-white border-2 border-[#00B8AA] flex items-center justify-center group-hover:bg-[#00B8AA] transition-colors">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#00B8AA] group-hover:bg-white" />
                     </div>
 
-                    <div className="p-4 rounded-2xl bg-[#F6F8F7] border border-[#E4EAE8] group-hover:border-[#0E9F8E]/40 transition-colors">
+                    <div className="p-4 rounded-2xl bg-[#F4F8FA] border border-[#E2E8EE] group-hover:border-[#00B8AA]/40 transition-colors">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-mono-code text-xs font-bold text-[#0E9F8E] bg-[#E7F6F3] px-2 py-0.5 rounded">
+                        <span className="font-mono-code text-xs font-bold text-[#00B8AA] bg-[#E6F7F5] px-2 py-0.5 rounded">
                           {item.year}
                         </span>
-                        <h4 className="font-sora font-bold text-sm text-[#0B1F2A]">{item.title}</h4>
+                        <h4 className="font-sora font-bold text-sm text-[#002050]">{item.title}</h4>
                       </div>
                       <p className="text-xs text-[#5B6B73] leading-relaxed">{item.desc}</p>
                     </div>
@@ -420,13 +407,13 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 5. "OPERATING SYSTEM" SECTION */}
-      <section className="py-20 bg-[#F6F8F7]">
+      <section className="py-20 bg-[#F4F8FA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-xs font-mono-code text-[#0E9F8E] font-bold uppercase tracking-wider">
-              The Lumora Platform
+            <span className="text-xs font-mono-code text-[#00B8AA] font-bold uppercase tracking-wider">
+              The Biopepti Platform
             </span>
-            <h2 className="text-3xl font-bold font-sora text-[#0B1F2A] mt-1">
+            <h2 className="text-3xl font-bold font-sora text-[#002050] mt-1">
               Built Like an Operating System for Wholesale Peptide Buyers
             </h2>
             <p className="text-sm text-[#5B6B73] mt-2">
@@ -436,23 +423,23 @@ export const HomePage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card 01 */}
-            <div className="p-8 rounded-3xl bg-white border border-[#E4EAE8] card-lift shadow-xs relative overflow-hidden flex flex-col justify-between">
+            <div className="p-8 rounded-3xl bg-white border border-[#E2E8EE] card-lift shadow-xs relative overflow-hidden flex flex-col justify-between">
               <div>
-                <span className="font-mono-code text-4xl font-extrabold text-[#E7F6F3] text-stroke block mb-4">
+                <span className="font-mono-code text-4xl font-extrabold text-[#E6F7F5] text-stroke block mb-4">
                   01
                 </span>
-                <div className="w-10 h-10 rounded-xl bg-[#E7F6F3] text-[#0E9F8E] flex items-center justify-center mb-4">
+                <div className="w-10 h-10 rounded-xl bg-[#E6F7F5] text-[#00B8AA] flex items-center justify-center mb-4">
                   <FlaskConical className="w-5 h-5" />
                 </div>
-                <h3 className="font-sora font-bold text-xl text-[#0B1F2A] mb-2">Catalog Products</h3>
+                <h3 className="font-sora font-bold text-xl text-[#002050] mb-2">Catalog Products</h3>
                 <p className="text-xs text-[#5B6B73] leading-relaxed">
-                  Over 179 standardized, inventory-backed SKUs. Constant stock of high-demand metabolic, recovery, and neuro-peptide sequences with verified purity.
+                  {CATALOG_SKU_COUNT} standardized, inventory-backed SKUs. Constant stock of high-demand metabolic, recovery, and neuro-peptide sequences with verified purity.
                 </p>
               </div>
-              <div className="pt-6 mt-6 border-t border-[#E4EAE8]">
+              <div className="pt-6 mt-6 border-t border-[#E2E8EE]">
                 <Link
                   to="/products"
-                  className="text-xs font-sora font-bold text-[#0E9F8E] hover:underline flex items-center gap-1"
+                  className="text-xs font-sora font-bold text-[#00B8AA] hover:underline flex items-center gap-1"
                 >
                   <span>Explore catalog</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -461,23 +448,23 @@ export const HomePage: React.FC = () => {
             </div>
 
             {/* Card 02 */}
-            <div className="p-8 rounded-3xl bg-white border border-[#E4EAE8] card-lift shadow-xs relative overflow-hidden flex flex-col justify-between">
+            <div className="p-8 rounded-3xl bg-white border border-[#E2E8EE] card-lift shadow-xs relative overflow-hidden flex flex-col justify-between">
               <div>
-                <span className="font-mono-code text-4xl font-extrabold text-[#E7F6F3] text-stroke block mb-4">
+                <span className="font-mono-code text-4xl font-extrabold text-[#E6F7F5] text-stroke block mb-4">
                   02
                 </span>
-                <div className="w-10 h-10 rounded-xl bg-[#E7F6F3] text-[#0E9F8E] flex items-center justify-center mb-4">
+                <div className="w-10 h-10 rounded-xl bg-[#E6F7F5] text-[#00B8AA] flex items-center justify-center mb-4">
                   <Layers className="w-5 h-5" />
                 </div>
-                <h3 className="font-sora font-bold text-xl text-[#0B1F2A] mb-2">Quote Workflow</h3>
+                <h3 className="font-sora font-bold text-xl text-[#002050] mb-2">Quote Workflow</h3>
                 <p className="text-xs text-[#5B6B73] leading-relaxed">
                   Interactive multi-tier pricing calculator with automated discounts, real-time shipping estimates, PDF export, and instant WhatsApp dispatch.
                 </p>
               </div>
-              <div className="pt-6 mt-6 border-t border-[#E4EAE8]">
+              <div className="pt-6 mt-6 border-t border-[#E2E8EE]">
                 <Link
                   to="/quote"
-                  className="text-xs font-sora font-bold text-[#0E9F8E] hover:underline flex items-center gap-1"
+                  className="text-xs font-sora font-bold text-[#00B8AA] hover:underline flex items-center gap-1"
                 >
                   <span>Launch Quote Builder</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -486,23 +473,23 @@ export const HomePage: React.FC = () => {
             </div>
 
             {/* Card 03 */}
-            <div className="p-8 rounded-3xl bg-white border border-[#E4EAE8] card-lift shadow-xs relative overflow-hidden flex flex-col justify-between">
+            <div className="p-8 rounded-3xl bg-white border border-[#E2E8EE] card-lift shadow-xs relative overflow-hidden flex flex-col justify-between">
               <div>
-                <span className="font-mono-code text-4xl font-extrabold text-[#E7F6F3] text-stroke block mb-4">
+                <span className="font-mono-code text-4xl font-extrabold text-[#E6F7F5] text-stroke block mb-4">
                   03
                 </span>
-                <div className="w-10 h-10 rounded-xl bg-[#E7F6F3] text-[#0E9F8E] flex items-center justify-center mb-4">
+                <div className="w-10 h-10 rounded-xl bg-[#E6F7F5] text-[#00B8AA] flex items-center justify-center mb-4">
                   <FileText className="w-5 h-5" />
                 </div>
-                <h3 className="font-sora font-bold text-xl text-[#0B1F2A] mb-2">Documentation</h3>
+                <h3 className="font-sora font-bold text-xl text-[#002050] mb-2">Documentation</h3>
                 <p className="text-xs text-[#5B6B73] leading-relaxed">
                   Every vial traceable to raw chromatograms and mass spectra. Search batch numbers online, download verified COA certificates, and verify compliance.
                 </p>
               </div>
-              <div className="pt-6 mt-6 border-t border-[#E4EAE8]">
+              <div className="pt-6 mt-6 border-t border-[#E2E8EE]">
                 <Link
                   to="/coa-reports"
-                  className="text-xs font-sora font-bold text-[#0E9F8E] hover:underline flex items-center gap-1"
+                  className="text-xs font-sora font-bold text-[#00B8AA] hover:underline flex items-center gap-1"
                 >
                   <span>Verify batch COA</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -513,89 +500,124 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 6. FEATURED PRODUCTS GRID */}
-      <section className="py-20 bg-white">
+      {/* 6. FEATURED PRODUCTS — horizontal rail */}
+      <section className="py-16 sm:py-20 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-10">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-8">
             <div>
-              <span className="text-xs font-mono-code text-[#0E9F8E] font-bold uppercase tracking-wider">
-                Wholesale Catalog Highlights
+              <span className="text-xs font-mono-code text-[#00B8AA] font-bold uppercase tracking-wider">
+                Catalog Highlights
               </span>
-              <h2 className="text-3xl font-bold font-sora text-[#0B1F2A] mt-1">
-                Featured Research Sequences
+              <h2 className="text-3xl font-bold font-sora text-[#002050] mt-1">
+                Featured research kits
               </h2>
+              <p className="text-sm text-[#5B6B73] mt-1 max-w-lg">
+                Scroll through top wholesale SKUs, then open the full {CATALOG_SKU_COUNT}-item catalog.
+              </p>
             </div>
 
-            <div className="flex items-center gap-4">
-              <Link
-                to="/pricing"
-                className="text-xs font-sora font-semibold text-[#5B6B73] hover:text-[#0B1F2A] underline"
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => scrollProducts('left')}
+                className="w-10 h-10 rounded-full border border-[#E2E8EE] bg-white hover:bg-[#F4F8FA] text-[#002050] flex items-center justify-center transition-colors"
+                aria-label="Scroll products left"
               >
-                View full price list (CSV)
-              </Link>
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollProducts('right')}
+                className="w-10 h-10 rounded-full border border-[#E2E8EE] bg-white hover:bg-[#F4F8FA] text-[#002050] flex items-center justify-center transition-colors"
+                aria-label="Scroll products right"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
               <Link
                 to="/products"
-                className="px-5 py-2.5 rounded-full bg-[#0B1F2A] hover:bg-[#07131A] text-white text-xs font-sora font-semibold flex items-center gap-2 transition-all shadow-xs"
+                className="ml-1 px-5 py-2.5 rounded-full bg-[#002050] hover:bg-[#001538] text-white text-xs font-sora font-semibold flex items-center gap-2 transition-all shadow-xs"
               >
-                <span>All 179 SKUs</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#5EEAD4]" />
+                <span>View All</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#5EC8E8]" />
               </Link>
             </div>
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="relative">
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-16 bg-gradient-to-r from-white to-transparent z-10" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-16 bg-gradient-to-l from-white to-transparent z-10" />
+
+          <div
+            ref={productRailRef}
+            className="product-rail hide-scrollbar flex gap-5 overflow-x-auto px-4 sm:px-6 lg:px-8 pb-4 max-w-7xl mx-auto"
+          >
             {featuredProducts.map(product => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onOpenDetails={prod => setSelectedProduct(prod)}
-              />
+              <div key={product.id} className="w-[280px] sm:w-[300px] shrink-0">
+                <ProductCard
+                  product={product}
+                  onOpenDetails={prod => setSelectedProduct(prod)}
+                />
+              </div>
             ))}
+
+            <Link
+              to="/products"
+              className="w-[220px] sm:w-[240px] shrink-0 rounded-3xl border border-dashed border-[#00B8AA]/40 bg-[#F4F8FA] hover:bg-[#E6F7F5] transition-colors flex flex-col items-center justify-center gap-3 p-6 text-center group"
+            >
+              <div className="w-12 h-12 rounded-full bg-[#002050] text-[#5EC8E8] flex items-center justify-center group-hover:scale-105 transition-transform">
+                <ArrowRight className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-sora font-bold text-sm text-[#002050]">View all products</p>
+                <p className="text-xs text-[#5B6B73] mt-1">{CATALOG_SKU_COUNT} SKUs in catalog</p>
+              </div>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* 7. BUYER WORKFLOW (3 Horizontal Steps) */}
-      <section className="py-20 bg-[#F6F8F7] border-y border-[#E4EAE8]">
+      <section className="py-20 bg-[#F4F8FA] border-y border-[#E2E8EE]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-xl mx-auto mb-14">
-            <span className="text-xs font-mono-code text-[#0E9F8E] font-bold uppercase tracking-wider">
+            <span className="text-xs font-mono-code text-[#00B8AA] font-bold uppercase tracking-wider">
               Procurement Process
             </span>
-            <h2 className="text-3xl font-bold font-sora text-[#0B1F2A] mt-1">
+            <h2 className="text-3xl font-bold font-sora text-[#002050] mt-1">
               Seamless 3-Step Wholesale Ordering
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             {/* Step 1 */}
-            <div className="p-8 rounded-3xl bg-white border border-[#E4EAE8] text-center card-lift relative">
-              <div className="w-14 h-14 rounded-2xl bg-[#E7F6F3] text-[#0E9F8E] flex items-center justify-center mx-auto mb-5 font-mono-code font-bold text-lg">
+            <div className="p-8 rounded-3xl bg-white border border-[#E2E8EE] text-center card-lift relative">
+              <div className="w-14 h-14 rounded-2xl bg-[#E6F7F5] text-[#00B8AA] flex items-center justify-center mx-auto mb-5 font-mono-code font-bold text-lg">
                 01
               </div>
-              <h3 className="font-sora font-bold text-lg text-[#0B1F2A] mb-2">Select Products</h3>
+              <h3 className="font-sora font-bold text-lg text-[#002050] mb-2">Select Products</h3>
               <p className="text-xs text-[#5B6B73] leading-relaxed">
                 Choose pure lyophilized formulations, vial quantities, and specifications directly from our live stock catalog.
               </p>
             </div>
 
             {/* Step 2 */}
-            <div className="p-8 rounded-3xl bg-white border border-[#E4EAE8] text-center card-lift relative">
-              <div className="w-14 h-14 rounded-2xl bg-[#E7F6F3] text-[#0E9F8E] flex items-center justify-center mx-auto mb-5 font-mono-code font-bold text-lg">
+            <div className="p-8 rounded-3xl bg-white border border-[#E2E8EE] text-center card-lift relative">
+              <div className="w-14 h-14 rounded-2xl bg-[#E6F7F5] text-[#00B8AA] flex items-center justify-center mx-auto mb-5 font-mono-code font-bold text-lg">
                 02
               </div>
-              <h3 className="font-sora font-bold text-lg text-[#0B1F2A] mb-2">Build Pricing</h3>
+              <h3 className="font-sora font-bold text-lg text-[#002050] mb-2">Build Pricing</h3>
               <p className="text-xs text-[#5B6B73] leading-relaxed">
                 Calculate volume discounts, add shipping destination, apply tax exemptions, and configure custom notes.
               </p>
             </div>
 
             {/* Step 3 */}
-            <div className="p-8 rounded-3xl bg-white border border-[#E4EAE8] text-center card-lift relative">
-              <div className="w-14 h-14 rounded-2xl bg-[#E7F6F3] text-[#0E9F8E] flex items-center justify-center mx-auto mb-5 font-mono-code font-bold text-lg">
+            <div className="p-8 rounded-3xl bg-white border border-[#E2E8EE] text-center card-lift relative">
+              <div className="w-14 h-14 rounded-2xl bg-[#E6F7F5] text-[#00B8AA] flex items-center justify-center mx-auto mb-5 font-mono-code font-bold text-lg">
                 03
               </div>
-              <h3 className="font-sora font-bold text-lg text-[#0B1F2A] mb-2">Export Quotation</h3>
+              <h3 className="font-sora font-bold text-lg text-[#002050] mb-2">Export Quotation</h3>
               <p className="text-xs text-[#5B6B73] leading-relaxed">
                 Download a branded PDF quote with institutional wire details or transmit directly to our sales desk via WhatsApp.
               </p>
@@ -607,13 +629,13 @@ export const HomePage: React.FC = () => {
       {/* 8. QUOTE BUILDER CTA BANNER */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-3xl bg-mesh-dark text-white p-8 sm:p-14 border border-[#0E9F8E]/30 shadow-2xl relative overflow-hidden">
+          <div className="rounded-3xl bg-mesh-dark text-white p-8 sm:p-14 border border-[#00B8AA]/30 shadow-2xl relative overflow-hidden">
             {/* Background elements */}
-            <div className="absolute top-0 right-0 w-80 h-80 bg-[#0E9F8E]/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-80 h-80 bg-[#00B8AA]/20 rounded-full blur-3xl pointer-events-none" />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
               <div className="lg:col-span-7 space-y-4">
-                <span className="inline-block px-3 py-1 rounded-full bg-[#5EEAD4]/10 text-[#5EEAD4] text-xs font-mono-code font-semibold border border-[#5EEAD4]/20">
+                <span className="inline-block px-3 py-1 rounded-full bg-[#5EC8E8]/10 text-[#5EC8E8] text-xs font-mono-code font-semibold border border-[#5EC8E8]/20">
                   INSTANT QUOTATION ENGINE
                 </span>
                 <h2 className="text-3xl sm:text-4xl font-bold font-sora text-white leading-tight">
@@ -625,7 +647,7 @@ export const HomePage: React.FC = () => {
                 <div className="pt-2 flex flex-wrap gap-4">
                   <Link
                     to="/quote"
-                    className="px-8 py-3.5 rounded-full bg-[#0E9F8E] hover:bg-[#0B8576] text-white font-sora font-bold text-xs flex items-center gap-2 transition-all shadow-md active:scale-95"
+                    className="px-8 py-3.5 rounded-full bg-[#00B8AA] hover:bg-[#009688] text-white font-sora font-bold text-xs flex items-center gap-2 transition-all shadow-md active:scale-95"
                   >
                     <span>Open Quote Builder</span>
                     <ArrowRight className="w-4 h-4 text-white" />
@@ -649,31 +671,31 @@ export const HomePage: React.FC = () => {
                     <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
                     <span className="font-mono-code text-[11px] text-slate-300 ml-2">Q-0IC5LUL2.pdf</span>
                   </div>
-                  <span className="font-mono-code text-[11px] text-[#5EEAD4]">AUTHENTICATED</span>
+                  <span className="font-mono-code text-[11px] text-[#5EC8E8]">AUTHENTICATED</span>
                 </div>
 
                 <div className="space-y-2 font-mono-code text-[11px]">
                   <div className="p-2 rounded bg-black/20 flex justify-between">
-                    <span className="text-slate-300">Tirzepatide 15mg*10 (Qty: 20)</span>
-                    <span className="text-[#5EEAD4]">$2,900</span>
+                    <span className="text-slate-300">TR15 Tirzepatide (Qty: 20)</span>
+                    <span className="text-[#5EC8E8]">$820</span>
                   </div>
                   <div className="p-2 rounded bg-black/20 flex justify-between">
-                    <span className="text-slate-300">BPC-157 10mg*10 (Qty: 10)</span>
-                    <span className="text-[#5EEAD4]">$980</span>
+                    <span className="text-slate-300">BC10 BPC-157 (Qty: 10)</span>
+                    <span className="text-[#5EC8E8]">$460</span>
                   </div>
                   <div className="p-2 rounded bg-black/20 flex justify-between">
                     <span className="text-slate-300">Volume Discount (5%)</span>
-                    <span className="text-emerald-400">-$194</span>
+                    <span className="text-emerald-400">-$64</span>
                   </div>
                   <div className="p-2 rounded bg-white/10 flex justify-between font-bold text-white">
                     <span>Grand Total:</span>
-                    <span className="text-[#5EEAD4]">$3,686 USD</span>
+                    <span className="text-[#5EC8E8]">$1,216 USD</span>
                   </div>
                 </div>
 
                 <div className="pt-2 flex justify-end">
                   <span className="text-[10px] text-slate-400 flex items-center gap-1 font-inter">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#5EEAD4]" /> Ready to export
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#5EC8E8]" /> Ready to export
                   </span>
                 </div>
               </div>
@@ -683,13 +705,13 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 9. FAQ ACCORDION */}
-      <section className="py-20 bg-[#F6F8F7] border-t border-[#E4EAE8]">
+      <section className="py-20 bg-[#F4F8FA] border-t border-[#E2E8EE]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-xs font-mono-code text-[#0E9F8E] font-bold uppercase tracking-wider">
+            <span className="text-xs font-mono-code text-[#00B8AA] font-bold uppercase tracking-wider">
               Wholesale Knowledge Base
             </span>
-            <h2 className="text-3xl font-bold font-sora text-[#0B1F2A] mt-1">
+            <h2 className="text-3xl font-bold font-sora text-[#002050] mt-1">
               Frequently Asked Questions
             </h2>
           </div>
@@ -700,22 +722,22 @@ export const HomePage: React.FC = () => {
               return (
                 <div
                   key={idx}
-                  className="rounded-2xl bg-white border border-[#E4EAE8] overflow-hidden transition-colors"
+                  className="rounded-2xl bg-white border border-[#E2E8EE] overflow-hidden transition-colors"
                 >
                   <button
                     onClick={() => setOpenFaq(isOpen ? null : idx)}
-                    className="w-full p-5 text-left font-sora font-semibold text-sm text-[#0B1F2A] flex items-center justify-between gap-4 hover:bg-slate-50 transition-colors"
+                    className="w-full p-5 text-left font-sora font-semibold text-sm text-[#002050] flex items-center justify-between gap-4 hover:bg-slate-50 transition-colors"
                     aria-expanded={isOpen}
                   >
                     <span>{faq.q}</span>
                     <ChevronDown
-                      className={`w-4 h-4 text-[#0E9F8E] transition-transform duration-200 shrink-0 ${
+                      className={`w-4 h-4 text-[#00B8AA] transition-transform duration-200 shrink-0 ${
                         isOpen ? 'rotate-180' : ''
                       }`}
                     />
                   </button>
                   {isOpen && (
-                    <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-[#5B6B73] leading-relaxed font-inter border-t border-[#E4EAE8]/60 bg-[#FAFCFB]">
+                    <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-[#5B6B73] leading-relaxed font-inter border-t border-[#E2E8EE]/60 bg-[#F7FAFC]">
                       {faq.a}
                     </div>
                   )}
@@ -727,7 +749,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 10. FINAL CTA BAND WITH WHATSAPP */}
-      <section className="py-14 bg-[#0B1F2A] text-white border-t border-[#0E9F8E]/20">
+      <section className="py-14 bg-[#002050] text-white border-t border-[#00B8AA]/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
             <h3 className="font-sora font-bold text-xl text-white">
@@ -743,9 +765,9 @@ export const HomePage: React.FC = () => {
               href="https://wa.me/85294582103"
               target="_blank"
               rel="noreferrer"
-              className="px-6 py-3 rounded-full bg-[#0E9F8E] hover:bg-[#0B8576] text-white font-sora font-semibold text-xs flex items-center gap-2 transition-colors shadow-sm"
+              className="px-6 py-3 rounded-full bg-[#00B8AA] hover:bg-[#009688] text-white font-sora font-semibold text-xs flex items-center gap-2 transition-colors shadow-sm"
             >
-              <MessageSquare className="w-4 h-4 text-[#5EEAD4]" />
+              <MessageSquare className="w-4 h-4 text-[#5EC8E8]" />
               <span>WhatsApp Sales (+852 9458 2103)</span>
             </a>
           </div>

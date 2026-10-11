@@ -21,7 +21,7 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const CART_STORAGE_KEY = 'lumora_quote_cart_v1';
+const CART_STORAGE_KEY = 'biopepti_quote_cart_v1';
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { showToast } = useToast();
@@ -93,7 +93,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const generateQuoteText = () => {
     const lines = [
-      `*LUMORA LABS — WHOLESALE INQUIRY*`,
+      `*BIOPEPTI — WHOLESALE INQUIRY*`,
       `Date: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}`,
       `Total Line Items: ${totalItems} | Total Packs: ${totalUnits}`,
       `---------------------------------`,
