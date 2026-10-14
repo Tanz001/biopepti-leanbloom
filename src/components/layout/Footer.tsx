@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldAlert, Award, FileText, CheckCircle2, MessageSquare, Mail, Phone, MapPin, Globe } from 'lucide-react';
-import { CATALOG_SKU_COUNT } from '../../data/products';
+import { useCatalog } from '../../context/CatalogContext';
 
 export const Footer: React.FC = () => {
+  const { products } = useCatalog();
+  const catalogCount = products.length;
   return (
     <footer className="bg-[#002050] text-white pt-16 pb-12 border-t border-[#00B8AA]/20 relative overflow-hidden">
       {/* Background Subtle Mesh Glow */}
@@ -54,7 +56,7 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2.5 text-sm text-slate-400">
               <li>
                 <Link to="/products" className="hover:text-white transition-colors">
-                  Product Catalog ({CATALOG_SKU_COUNT} SKUs)
+                  Product Catalog ({catalogCount} SKUs)
                 </Link>
               </li>
               <li>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
-import { PRODUCTS_DATA, getGroupedProducts } from '../data/products';
 import { Product, SavedQuote, QuoteCustomer } from '../types';
+import { useCatalog } from '../context/CatalogContext';
 import { generateQuotePDF } from '../lib/pdfGenerator';
 import { VialGraphic } from '../components/ui/VialGraphic';
 import {
@@ -44,6 +44,7 @@ export const QuoteBuilderPage: React.FC = () => {
   } = useCart();
 
   const { showToast } = useToast();
+  const { products, groupedProducts: allGrouped } = useCatalog();
 
   // Active Tab: 'quote' | 'preview' | 'history'
   const [activeTab, setActiveTab] = useState<'quote' | 'preview' | 'history'>('quote');
@@ -114,14 +115,13 @@ export const QuoteBuilderPage: React.FC = () => {
 
   // Grouped products for catalog panel
   const groupedProducts = useMemo(() => {
-    const all = getGroupedProducts();
-    if (!catalogSearch.trim()) return all;
+    if (!catalogSearch.trim()) return allGrouped;
     const q = catalogSearch.toLowerCase();
-    return all.filter(g =>
+    return allGrouped.filter(g =>
       g.name.toLowerCase().includes(q) ||
       g.variants.some(v => v.sku.toLowerCase().includes(q) || v.spec.toLowerCase().includes(q))
     );
-  }, [catalogSearch]);
+  }, [allGrouped, catalogSearch]);
 
   const toggleGroup = (name: string) => {
     setExpandedCatalogGroups(prev => ({ ...prev, [name]: !prev[name] }));
@@ -326,7 +326,7 @@ export const QuoteBuilderPage: React.FC = () => {
               <div className="flex items-center justify-between">
                 <h3 className="font-sora font-bold text-sm text-[#002050]">Catalog Quick-Add</h3>
                 <span className="text-[11px] font-mono-code text-[#5B6B73]">
-                  {PRODUCTS_DATA.length} Formulations
+                  {products.length} Formulations
                 </span>
               </div>
 

@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { PRODUCTS_DATA, PRODUCT_CATEGORIES } from '../data/products';
 import { ProductCard } from '../components/products/ProductCard';
 import { ProductDetailModal } from '../components/products/ProductDetailModal';
 import { Product, ProductCategory } from '../types';
 import { useCart } from '../context/CartContext';
+import { useCatalog } from '../context/CatalogContext';
 import {
   Search,
   LayoutGrid,
@@ -20,6 +20,7 @@ import {
 
 export const ProductsPage: React.FC = () => {
   const { addItem } = useCart();
+  const { products, categories, loading, error } = useCatalog();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All Categories');
   const [selectedSpecFilter, setSelectedSpecFilter] = useState<string>('all');
@@ -33,7 +34,7 @@ export const ProductsPage: React.FC = () => {
 
   // Filter products
   const filteredProducts = useMemo(() => {
-    return PRODUCTS_DATA.filter(prod => {
+    return products.filter(prod => {
       // Category filter
       if (selectedCategory !== 'All Categories' && prod.category !== selectedCategory) {
         return false;
@@ -64,9 +65,13 @@ export const ProductsPage: React.FC = () => {
       if (sortBy === 'price-asc') return a.price - b.price;
       if (sortBy === 'price-desc') return b.price - a.price;
       if (sortBy === 'name-asc') return a.name.localeCompare(b.name);
+      if (sortBy === 'featured') {
+        if (a.featured === b.featured) return 0;
+        return a.featured ? -1 : 1;
+      }
       return 0;
     });
-  }, [searchQuery, selectedCategory, selectedSpecFilter, maxPrice, sortBy]);
+  }, [products, searchQuery, selectedCategory, selectedSpecFilter, maxPrice, sortBy]);
 
   // Group filtered products by base name
   const groupedProducts = useMemo(() => {
@@ -127,9 +132,22 @@ export const ProductsPage: React.FC = () => {
     setSortBy('featured');
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#F4F8FA] pt-28 pb-20 flex items-center justify-center text-sm text-[#5B6B73]">
+        Loading catalog…
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#F4F8FA] pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {error && (
+          <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error} — make sure the backend is running on port 4000.
+          </div>
+        )}
         {/* Page Header */}
         <div className="mb-8 space-y-4">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -229,7 +247,7 @@ export const ProductsPage: React.FC = () => {
 
             {/* Category Filter Chips */}
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1 no-scrollbar">
-              {PRODUCT_CATEGORIES.map(cat => {
+              {['All Categories', ...categories].map(cat => {
                 const isSelected = selectedCategory === cat;
                 return (
                   <button
@@ -494,7 +512,7 @@ export const ProductsPage: React.FC = () => {
         <ProductDetailModal
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}
-          relatedProducts={PRODUCTS_DATA.filter(
+          relatedProducts={products.filter(
             p => p.category === selectedProduct.category && p.id !== selectedProduct.id
           )}
           onSelectProduct={prod => setSelectedProduct(prod)}

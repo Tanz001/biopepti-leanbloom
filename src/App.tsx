@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastProvider } from './context/ToastContext';
 import { CartProvider } from './context/CartContext';
+import { CatalogProvider } from './context/CatalogContext';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { QuoteCartDrawer } from './components/layout/QuoteCartDrawer';
@@ -21,6 +22,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 export default function App() {
   return (
     <ToastProvider>
+      <CatalogProvider>
       <CartProvider>
         <BrowserRouter>
           <ScrollToTop />
@@ -54,6 +56,7 @@ export default function App() {
           </div>
         </BrowserRouter>
       </CartProvider>
+      </CatalogProvider>
     </ToastProvider>
   );
 }

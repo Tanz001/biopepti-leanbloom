@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Product } from '../../types';
 import { useCart } from '../../context/CartContext';
 import { VialGraphic } from '../ui/VialGraphic';
-import { X, Plus, Minus, Check, ShieldCheck, FileText, ArrowRight, Layers, Sparkles } from 'lucide-react';
+import { X, Plus, Minus, Check, ShieldCheck, FileText, ArrowRight, Layers, Sparkles, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface ProductDetailModalProps {
@@ -28,6 +28,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     addItem(product, quantity);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
+  };
+
+  const handleBuyNow = () => {
+    if (!product.buyLink) return;
+    window.open(product.buyLink, '_blank', 'noopener,noreferrer');
   };
 
   // Pricing tiers calculation
@@ -190,26 +195,36 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </button>
                 </div>
 
-                <button
-                  onClick={handleAdd}
-                  className={`flex-1 py-3 px-6 rounded-full font-sora font-semibold text-xs flex items-center justify-center gap-2 transition-all shadow-md ${
-                    added
-                      ? 'bg-[#16A34A] text-white'
-                      : 'bg-[#002050] hover:bg-[#001538] text-white'
-                  }`}
-                >
-                  {added ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      <span>Added to Quote Cart</span>
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="w-4 h-4 text-[#5EC8E8]" />
-                      <span>Add to Quote (${product.price * quantity})</span>
-                    </>
-                  )}
-                </button>
+                {product.buyLink ? (
+                  <button
+                    onClick={handleBuyNow}
+                    className="flex-1 py-3 px-6 rounded-full font-sora font-semibold text-xs flex items-center justify-center gap-2 transition-all shadow-md bg-[#00B8AA] hover:bg-[#00a396] text-white"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <span>Buy Now</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleAdd}
+                    className={`flex-1 py-3 px-6 rounded-full font-sora font-semibold text-xs flex items-center justify-center gap-2 transition-all shadow-md ${
+                      added
+                        ? 'bg-[#16A34A] text-white'
+                        : 'bg-[#002050] hover:bg-[#001538] text-white'
+                    }`}
+                  >
+                    {added ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        <span>Added to Quote Cart</span>
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="w-4 h-4 text-[#5EC8E8]" />
+                        <span>Add to Quote (${product.price * quantity})</span>
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
 
               {/* COA verification link */}

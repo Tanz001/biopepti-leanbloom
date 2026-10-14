@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
+﻿import React, { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PRODUCTS_DATA, CATALOG_SKU_COUNT } from '../data/products';
 import { ProductCard } from '../components/products/ProductCard';
 import { ProductDetailModal } from '../components/products/ProductDetailModal';
 import { VialGraphic } from '../components/ui/VialGraphic';
 import { Product } from '../types';
+import { useCatalog } from '../context/CatalogContext';
 import {
   ArrowRight,
   ShieldCheck,
@@ -24,18 +24,19 @@ import {
 } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
+  const { products, loading } = useCatalog();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const productRailRef = useRef<HTMLDivElement>(null);
 
-  // Featured SKUs from the wholesale kit list
-  const featuredSkus = [
-    'TR15', 'RT10', 'SM10', 'BC10', 'CU100', 'MS10', 'ET10', 'IP10',
-    'BT10', 'CND5', 'NJ500', 'SK10'
-  ];
-  const featuredProducts = featuredSkus
-    .map(sku => PRODUCTS_DATA.find(p => p.sku === sku))
-    .filter((p): p is Product => Boolean(p));
+  const catalogCount = products.length;
+
+  // Prefer featured items from admin; otherwise show latest active SKUs
+  const featuredProducts = useMemo(() => {
+    const featured = products.filter((p) => p.featured);
+    const source = featured.length > 0 ? featured : products;
+    return source.slice(0, 12);
+  }, [products]);
 
   const scrollProducts = (direction: 'left' | 'right') => {
     const rail = productRailRef.current;
@@ -47,7 +48,7 @@ export const HomePage: React.FC = () => {
   const faqs = [
     {
       q: 'What are the international shipping terms and cold-chain protection?',
-      a: 'We ship worldwide via FedEx Priority and DHL Cold-Chain Express. All lyophilized peptide vials are packed in custom insulated styrofoam containers with thermal cooling packs. Dispatch occurs within 24–48 hours for in-stock SKUs, with typical transit times of 3–5 business days to North America and Europe.'
+      a: 'We ship worldwide via FedEx Priority and DHL Cold-Chain Express. All lyophilized peptide vials are packed in custom insulated styrofoam containers with thermal cooling packs. Dispatch occurs within 24â€“48 hours for in-stock SKUs, with typical transit times of 3â€“5 business days to North America and Europe.'
     },
     {
       q: 'What is the Minimum Order Quantity (MOQ) for wholesale catalog items?',
@@ -97,7 +98,7 @@ export const HomePage: React.FC = () => {
               </h1>
 
               <p className="animate-rise-delay-2 text-base sm:text-lg text-[#5B6B73] max-w-xl font-inter leading-relaxed">
-                {CATALOG_SKU_COUNT} HPLC/MS-verified SKUs with instant quotations and cold-chain dispatch worldwide.
+                {catalogCount} HPLC/MS-verified SKUs with instant quotations and cold-chain dispatch worldwide.
               </p>
 
               <div className="animate-rise-delay-2 flex flex-wrap items-center gap-3 pt-1">
@@ -119,7 +120,7 @@ export const HomePage: React.FC = () => {
               <div className="animate-rise-delay-2 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-[#5B6B73] font-medium">
                 <span className="inline-flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-[#00B8AA]" />
-                  ≥99% purity kits
+                  â‰¥99% purity kits
                 </span>
                 <span className="inline-flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-[#00B8AA]" />
@@ -139,30 +140,30 @@ export const HomePage: React.FC = () => {
               <div className="relative w-full max-w-sm">
                 <div className="animate-float-soft rounded-[2rem] bg-white/90 border border-[#E2E8EE] shadow-2xl p-6 sm:p-8 backdrop-blur-sm">
                   <div className="h-56 sm:h-64 rounded-3xl bg-gradient-to-b from-[#E6F7F5] via-white to-[#F4F8FA] flex items-center justify-center border border-[#E2E8EE]/70">
-                    <VialGraphic size={140} color="#00B8AA" label="BIOPEPTI" sublabel="TR15" purity="≥99%" />
+                    <VialGraphic size={140} color="#00B8AA" label="BIOPEPTI" sublabel="TR15" purity="â‰¥99%" />
                   </div>
                   <div className="mt-5 flex items-end justify-between gap-3">
                     <div>
-                      <p className="font-mono-code text-[11px] font-bold text-[#00B8AA]">TR15 · 15mg×10</p>
+                      <p className="font-mono-code text-[11px] font-bold text-[#00B8AA]">TR15 Â· 15mgÃ—10</p>
                       <h3 className="font-sora font-bold text-lg text-[#002050]">Tirzepatide</h3>
                     </div>
                     <div className="text-right">
                       <p className="text-[10px] uppercase tracking-wider text-[#5B6B73] font-semibold">Kit price</p>
-                      <p className="font-mono-code font-bold text-xl text-[#002050]">$41</p>
+                      <p className="font-mono-code font-bold text-xl text-[#002050]">$59</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="absolute -left-3 sm:-left-6 top-10 w-28 sm:w-32 rounded-2xl bg-white border border-[#E2E8EE] shadow-lg p-3 -rotate-6">
-                  <VialGraphic size={56} color="#00B8AA" label="BIO" sublabel="BC10" purity="≥99%" />
+                  <VialGraphic size={56} color="#00B8AA" label="BIO" sublabel="BC10" purity="â‰¥99%" />
                   <p className="mt-1 font-mono-code text-[10px] text-[#5B6B73]">BPC-157</p>
-                  <p className="font-sora font-bold text-xs text-[#002050]">$46</p>
+                  <p className="font-sora font-bold text-xs text-[#002050]">$67</p>
                 </div>
 
                 <div className="absolute -right-2 sm:-right-5 bottom-8 w-28 sm:w-32 rounded-2xl bg-white border border-[#E2E8EE] shadow-lg p-3 rotate-6">
-                  <VialGraphic size={56} color="#0084D1" label="BIO" sublabel="CU100" purity="≥99%" />
+                  <VialGraphic size={56} color="#0084D1" label="BIO" sublabel="CU100" purity="â‰¥99%" />
                   <p className="mt-1 font-mono-code text-[10px] text-[#5B6B73]">GHK-Cu</p>
-                  <p className="font-sora font-bold text-xs text-[#002050]">$36</p>
+                  <p className="font-sora font-bold text-xs text-[#002050]">$52</p>
                 </div>
               </div>
             </div>
@@ -179,7 +180,7 @@ export const HomePage: React.FC = () => {
                 <Database className="w-6 h-6" />
               </div>
               <div>
-                <span className="font-mono-code text-2xl sm:text-3xl font-extrabold text-[#002050] block">{CATALOG_SKU_COUNT}</span>
+                <span className="font-mono-code text-2xl sm:text-3xl font-extrabold text-[#002050] block">{catalogCount}</span>
                 <span className="text-xs text-[#5B6B73] font-medium">Catalog SKUs</span>
               </div>
             </div>
@@ -433,7 +434,7 @@ export const HomePage: React.FC = () => {
                 </div>
                 <h3 className="font-sora font-bold text-xl text-[#002050] mb-2">Catalog Products</h3>
                 <p className="text-xs text-[#5B6B73] leading-relaxed">
-                  {CATALOG_SKU_COUNT} standardized, inventory-backed SKUs. Constant stock of high-demand metabolic, recovery, and neuro-peptide sequences with verified purity.
+                  {catalogCount} standardized, inventory-backed SKUs. Constant stock of high-demand metabolic, recovery, and neuro-peptide sequences with verified purity.
                 </p>
               </div>
               <div className="pt-6 mt-6 border-t border-[#E2E8EE]">
@@ -500,7 +501,7 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 6. FEATURED PRODUCTS — horizontal rail */}
+      {/* 6. FEATURED PRODUCTS â€” horizontal rail */}
       <section className="py-16 sm:py-20 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-8">
@@ -512,7 +513,7 @@ export const HomePage: React.FC = () => {
                 Featured research kits
               </h2>
               <p className="text-sm text-[#5B6B73] mt-1 max-w-lg">
-                Scroll through top wholesale SKUs, then open the full {CATALOG_SKU_COUNT}-item catalog.
+                Scroll through top wholesale SKUs, then open the full {catalogCount}-item catalog.
               </p>
             </div>
 
@@ -552,6 +553,18 @@ export const HomePage: React.FC = () => {
             ref={productRailRef}
             className="product-rail hide-scrollbar flex gap-5 overflow-x-auto px-4 sm:px-6 lg:px-8 pb-4 max-w-7xl mx-auto"
           >
+            {loading && (
+              <div className="w-full py-16 text-center text-sm text-[#5B6B73]">
+                Loading catalog…
+              </div>
+            )}
+
+            {!loading && featuredProducts.length === 0 && (
+              <div className="w-full py-16 text-center text-sm text-[#5B6B73]">
+                No products yet. Add active products in the admin panel.
+              </div>
+            )}
+
             {featuredProducts.map(product => (
               <div key={product.id} className="w-[280px] sm:w-[300px] shrink-0">
                 <ProductCard
@@ -561,6 +574,7 @@ export const HomePage: React.FC = () => {
               </div>
             ))}
 
+            {featuredProducts.length > 0 && (
             <Link
               to="/products"
               className="w-[220px] sm:w-[240px] shrink-0 rounded-3xl border border-dashed border-[#00B8AA]/40 bg-[#F4F8FA] hover:bg-[#E6F7F5] transition-colors flex flex-col items-center justify-center gap-3 p-6 text-center group"
@@ -570,9 +584,10 @@ export const HomePage: React.FC = () => {
               </div>
               <div>
                 <p className="font-sora font-bold text-sm text-[#002050]">View all products</p>
-                <p className="text-xs text-[#5B6B73] mt-1">{CATALOG_SKU_COUNT} SKUs in catalog</p>
+                <p className="text-xs text-[#5B6B73] mt-1">{catalogCount} SKUs in catalog</p>
               </div>
             </Link>
+            )}
           </div>
         </div>
       </section>
@@ -677,19 +692,19 @@ export const HomePage: React.FC = () => {
                 <div className="space-y-2 font-mono-code text-[11px]">
                   <div className="p-2 rounded bg-black/20 flex justify-between">
                     <span className="text-slate-300">TR15 Tirzepatide (Qty: 20)</span>
-                    <span className="text-[#5EC8E8]">$820</span>
+                    <span className="text-[#5EC8E8]">$1,180</span>
                   </div>
                   <div className="p-2 rounded bg-black/20 flex justify-between">
                     <span className="text-slate-300">BC10 BPC-157 (Qty: 10)</span>
-                    <span className="text-[#5EC8E8]">$460</span>
+                    <span className="text-[#5EC8E8]">$670</span>
                   </div>
                   <div className="p-2 rounded bg-black/20 flex justify-between">
                     <span className="text-slate-300">Volume Discount (5%)</span>
-                    <span className="text-emerald-400">-$64</span>
+                    <span className="text-emerald-400">-$93</span>
                   </div>
                   <div className="p-2 rounded bg-white/10 flex justify-between font-bold text-white">
                     <span>Grand Total:</span>
-                    <span className="text-[#5EC8E8]">$1,216 USD</span>
+                    <span className="text-[#5EC8E8]">$1,757 USD</span>
                   </div>
                 </div>
 
@@ -779,7 +794,7 @@ export const HomePage: React.FC = () => {
         <ProductDetailModal
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}
-          relatedProducts={PRODUCTS_DATA.filter(
+          relatedProducts={products.filter(
             p => p.category === selectedProduct.category && p.id !== selectedProduct.id
           )}
           onSelectProduct={prod => setSelectedProduct(prod)}

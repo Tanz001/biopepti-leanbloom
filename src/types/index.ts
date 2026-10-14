@@ -1,16 +1,10 @@
-export type ProductCategory = 
-  | 'Weight Management'
-  | 'Recovery & Repair'
-  | 'Growth Hormone & Longevity'
-  | 'Cosmetic & Peptides'
-  | 'Cognitive & Neuro'
-  | 'Cellular Research';
+export type ProductCategory = string;
 
 export interface Product {
   id: string;
   sku: string;
   name: string;
-  spec: string; // e.g. "5mg*10vials"
+  spec: string; // e.g. "5mg"
   price: number; // in USD
   category: ProductCategory;
   purity: string; // e.g. "99.4%"
@@ -23,6 +17,11 @@ export interface Product {
   storage?: string;
   inStock: boolean;
   leadTime?: string;
+  /** External checkout / purchase URL from admin */
+  buyLink?: string;
+  image?: string;
+  featured?: boolean;
+  parentId?: string;
 }
 
 export interface ProductGroup {

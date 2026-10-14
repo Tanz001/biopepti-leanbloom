@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { PRODUCTS_DATA } from '../data/products';
 import { useCart } from '../context/CartContext';
+import { useCatalog } from '../context/CatalogContext';
 import { Product } from '../types';
 import {
   Download,
@@ -17,21 +17,22 @@ import { Link } from 'react-router-dom';
 
 export const PricingPage: React.FC = () => {
   const { addItem } = useCart();
+  const { products } = useCatalog();
   const [searchQuery, setSearchQuery] = useState('');
   const [addedItemIds, setAddedItemIds] = useState<Record<string, boolean>>({});
 
   // Filter products by search
   const filteredProducts = useMemo(() => {
-    if (!searchQuery.trim()) return PRODUCTS_DATA;
+    if (!searchQuery.trim()) return products;
     const q = searchQuery.toLowerCase();
-    return PRODUCTS_DATA.filter(
+    return products.filter(
       p =>
         p.name.toLowerCase().includes(q) ||
         p.sku.toLowerCase().includes(q) ||
         p.spec.toLowerCase().includes(q) ||
         p.category.toLowerCase().includes(q)
     );
-  }, [searchQuery]);
+  }, [products, searchQuery]);
 
   // Group by category for clear group dividers in the table
   const groupedByCategory = useMemo(() => {
@@ -56,7 +57,7 @@ export const PricingPage: React.FC = () => {
   // CSV Download function
   const downloadCSV = () => {
     const headers = ['SKU', 'Product Name', 'Specification', 'Category', 'Unit Price (USD)', 'Purity', 'CAS Number', 'Lead Time'];
-    const rows = PRODUCTS_DATA.map(p => [
+    const rows = products.map(p => [
       `"${p.sku}"`,
       `"${p.name}"`,
       `"${p.spec}"`,
