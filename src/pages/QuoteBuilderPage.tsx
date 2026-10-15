@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
-import { Product, SavedQuote, QuoteCustomer } from '../types';
+import { Product, SavedQuote, QuoteCustomer, productWithVariant } from '../types';
 import { useCatalog } from '../context/CatalogContext';
+import { groupStorefrontProducts } from '../lib/catalogApi';
 import { generateQuotePDF } from '../lib/pdfGenerator';
 import { VialGraphic } from '../components/ui/VialGraphic';
 import {
@@ -44,7 +45,7 @@ export const QuoteBuilderPage: React.FC = () => {
   } = useCart();
 
   const { showToast } = useToast();
-  const { products, groupedProducts: allGrouped } = useCatalog();
+  const { products } = useCatalog();
 
   // Active Tab: 'quote' | 'preview' | 'history'
   const [activeTab, setActiveTab] = useState<'quote' | 'preview' | 'history'>('quote');
@@ -113,15 +114,21 @@ export const QuoteBuilderPage: React.FC = () => {
 
   const grandTotal = Math.max(0, subtotal - discountAmount + shippingFee + taxAmount);
 
-  // Grouped products for catalog panel
   const groupedProducts = useMemo(() => {
+    const allGrouped = groupStorefrontProducts(products);
     if (!catalogSearch.trim()) return allGrouped;
     const q = catalogSearch.toLowerCase();
-    return allGrouped.filter(g =>
-      g.name.toLowerCase().includes(q) ||
-      g.variants.some(v => v.sku.toLowerCase().includes(q) || v.spec.toLowerCase().includes(q))
+    return allGrouped.filter(
+      (g) =>
+        g.name.toLowerCase().includes(q) ||
+        g.variants.some(
+          (p) =>
+            p.sku.toLowerCase().includes(q) ||
+            p.spec.toLowerCase().includes(q) ||
+            p.variants.some((v) => v.strength.toLowerCase().includes(q))
+        )
     );
-  }, [allGrouped, catalogSearch]);
+  }, [products, catalogSearch]);
 
   const toggleGroup = (name: string) => {
     setExpandedCatalogGroups(prev => ({ ...prev, [name]: !prev[name] }));
@@ -360,7 +367,7 @@ export const QuoteBuilderPage: React.FC = () => {
                             {group.name}
                           </span>
                           <span className="text-[10px] text-[#5B6B73]">
-                            {group.variants.length} specifications
+                            {group.variants.reduce((n, p) => n + p.variants.length, 0)} sizes
                           </span>
                         </div>
                         {isExp ? (
@@ -372,31 +379,37 @@ export const QuoteBuilderPage: React.FC = () => {
 
                       {isExp && (
                         <div className="p-2 space-y-1.5 border-t border-[#E2E8EE] bg-white">
-                          {group.variants.map(variant => (
-                            <div
-                              key={variant.id}
-                              className="p-2 rounded-xl bg-[#F4F8FA] flex items-center justify-between text-xs"
-                            >
-                              <div>
-                                <span className="font-mono-code text-[11px] font-bold text-[#002050]">
-                                  [{variant.sku}]
-                                </span>
-                                <span className="text-[#5B6B73] ml-1.5">{variant.spec}</span>
+                          {group.variants.flatMap((product) =>
+                            product.variants.map((variant) => (
+                              <div
+                                key={`${product.id}-${variant.id}`}
+                                className="p-2 rounded-xl bg-[#F4F8FA] flex items-center justify-between gap-2 text-xs"
+                              >
+                                <div className="min-w-0">
+                                  <span className="font-mono-code text-[11px] font-bold text-[#002050]">
+                                    [{product.sku}]
+                                  </span>
+                                  <span className="text-[#5B6B73] ml-1.5 break-all">
+                                    {variant.strength}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2 shrink-0">
+                                  <span className="font-mono-code font-bold text-[#00B8AA]">
+                                    ${variant.price.toFixed(2)}
+                                  </span>
+                                  <button
+                                    onClick={() =>
+                                      addItem(productWithVariant(product, variant), 1)
+                                    }
+                                    className="w-6 h-6 rounded-lg bg-[#00B8AA] hover:bg-[#009688] text-white flex items-center justify-center transition-colors shadow-2xs"
+                                    title="Add to quotation"
+                                  >
+                                    <Plus className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
                               </div>
-                              <div className="flex items-center gap-2">
-                                <span className="font-mono-code font-bold text-[#00B8AA]">
-                                  ${variant.price}
-                                </span>
-                                <button
-                                  onClick={() => addItem(variant, 1)}
-                                  className="w-6 h-6 rounded-lg bg-[#00B8AA] hover:bg-[#009688] text-white flex items-center justify-center transition-colors shadow-2xs"
-                                  title="Add to quotation"
-                                >
-                                  <Plus className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
-                            </div>
-                          ))}
+                            ))
+                          )}
                         </div>
                       )}
                     </div>

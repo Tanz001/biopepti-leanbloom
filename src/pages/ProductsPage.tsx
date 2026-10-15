@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { ProductCard } from '../components/products/ProductCard';
 import { ProductDetailModal } from '../components/products/ProductDetailModal';
-import { Product, ProductCategory } from '../types';
+import { Product, formatProductPrice, productWithVariant } from '../types';
 import { useCart } from '../context/CartContext';
 import { useCatalog } from '../context/CatalogContext';
 import {
@@ -11,11 +11,10 @@ import {
   Filter,
   Plus,
   Check,
-  ChevronDown,
-  ChevronRight,
   SlidersHorizontal,
   RotateCcw,
-  Sparkles
+  Sparkles,
+  Eye
 } from 'lucide-react';
 
 export const ProductsPage: React.FC = () => {
@@ -28,99 +27,55 @@ export const ProductsPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'name-asc'>('featured');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [addedItemIds, setAddedItemIds] = useState<Record<string, boolean>>({});
 
-  // Filter products
   const filteredProducts = useMemo(() => {
-    return products.filter(prod => {
-      // Category filter
-      if (selectedCategory !== 'All Categories' && prod.category !== selectedCategory) {
-        return false;
-      }
-      // Search query (name, sku, spec, description)
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase();
-        const matchesName = prod.name.toLowerCase().includes(q);
-        const matchesSku = prod.sku.toLowerCase().includes(q);
-        const matchesSpec = prod.spec.toLowerCase().includes(q);
-        const matchesDesc = prod.description.toLowerCase().includes(q);
-        if (!matchesName && !matchesSku && !matchesSpec && !matchesDesc) {
+    return products
+      .filter((prod) => {
+        if (selectedCategory !== 'All Categories' && prod.category !== selectedCategory) {
           return false;
         }
-      }
-      // Spec filter
-      if (selectedSpecFilter !== 'all') {
-        if (!prod.spec.toLowerCase().includes(selectedSpecFilter.toLowerCase())) {
+        if (searchQuery.trim()) {
+          const q = searchQuery.toLowerCase();
+          const matchesName = prod.name.toLowerCase().includes(q);
+          const matchesSku = prod.sku.toLowerCase().includes(q);
+          const matchesSpec = prod.spec.toLowerCase().includes(q);
+          const matchesDesc = prod.description.toLowerCase().includes(q);
+          if (!matchesName && !matchesSku && !matchesSpec && !matchesDesc) {
+            return false;
+          }
+        }
+        if (selectedSpecFilter !== 'all') {
+          if (!prod.spec.toLowerCase().includes(selectedSpecFilter.toLowerCase())) {
+            return false;
+          }
+        }
+        if (prod.priceMin > maxPrice) {
           return false;
         }
-      }
-      // Price slider
-      if (prod.price > maxPrice) {
-        return false;
-      }
-      return true;
-    }).sort((a, b) => {
-      if (sortBy === 'price-asc') return a.price - b.price;
-      if (sortBy === 'price-desc') return b.price - a.price;
-      if (sortBy === 'name-asc') return a.name.localeCompare(b.name);
-      if (sortBy === 'featured') {
-        if (a.featured === b.featured) return 0;
-        return a.featured ? -1 : 1;
-      }
-      return 0;
-    });
-  }, [products, searchQuery, selectedCategory, selectedSpecFilter, maxPrice, sortBy]);
-
-  // Group filtered products by base name
-  const groupedProducts = useMemo(() => {
-    const map = new Map<string, Product[]>();
-    filteredProducts.forEach(prod => {
-      const baseName = prod.name.split('(')[0].trim();
-      if (!map.has(baseName)) {
-        map.set(baseName, []);
-      }
-      map.get(baseName)!.push(prod);
-    });
-
-    const groups: { name: string; category: ProductCategory; variants: Product[] }[] = [];
-    map.forEach((variants, name) => {
-      groups.push({
-        name,
-        category: variants[0].category,
-        variants
+        return true;
+      })
+      .sort((a, b) => {
+        if (sortBy === 'price-asc') return a.priceMin - b.priceMin;
+        if (sortBy === 'price-desc') return b.priceMin - a.priceMin;
+        if (sortBy === 'name-asc') return a.name.localeCompare(b.name);
+        if (sortBy === 'featured') {
+          if (a.featured === b.featured) return 0;
+          return a.featured ? -1 : 1;
+        }
+        return 0;
       });
-    });
-    return groups;
-  }, [filteredProducts]);
-
-  // Toggle group expansion
-  const toggleGroup = (groupName: string) => {
-    setExpandedGroups(prev => ({
-      ...prev,
-      [groupName]: !prev[groupName]
-    }));
-  };
-
-  const handleExpandAll = () => {
-    const next: Record<string, boolean> = {};
-    groupedProducts.forEach(g => {
-      next[g.name] = true;
-    });
-    setExpandedGroups(next);
-  };
-
-  const handleCollapseAll = () => {
-    setExpandedGroups({});
-  };
+  }, [products, searchQuery, selectedCategory, selectedSpecFilter, maxPrice, sortBy]);
 
   const handleAddVariant = (product: Product, e: React.MouseEvent) => {
     e.stopPropagation();
-    addItem(product, 1);
-    setAddedItemIds(prev => ({ ...prev, [product.id]: true }));
+    const first = product.variants[0];
+    if (!first) return;
+    addItem(productWithVariant(product, first), 1);
+    setAddedItemIds((prev) => ({ ...prev, [product.id]: true }));
     setTimeout(() => {
-      setAddedItemIds(prev => ({ ...prev, [product.id]: false }));
+      setAddedItemIds((prev) => ({ ...prev, [product.id]: false }));
     }, 1200);
   };
 
@@ -163,25 +118,9 @@ export const ProductsPage: React.FC = () => {
               </p>
             </div>
 
-            {/* Total count badge & Expand/Collapse controls */}
-            <div className="flex items-center gap-3">
-              <span className="font-mono-code text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-[#E2E8EE] text-[#002050] shadow-2xs">
-                {filteredProducts.length} products • {groupedProducts.length} groups
-              </span>
-              <button
-                onClick={handleExpandAll}
-                className="text-xs text-[#00B8AA] hover:underline font-semibold"
-              >
-                Expand all
-              </button>
-              <span className="text-slate-300">|</span>
-              <button
-                onClick={handleCollapseAll}
-                className="text-xs text-[#5B6B73] hover:underline font-medium"
-              >
-                Collapse all
-              </button>
-            </div>
+            <span className="font-mono-code text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-[#E2E8EE] text-[#002050] shadow-2xs">
+              {filteredProducts.length} products
+            </span>
           </div>
 
           {/* Search Bar & Primary Category Chips */}
@@ -351,9 +290,8 @@ export const ProductsPage: React.FC = () => {
             </div>
           </aside>
 
-          {/* Right Product Grid / List Results */}
           <main className="lg:col-span-9 space-y-6">
-            {groupedProducts.length === 0 ? (
+            {filteredProducts.length === 0 ? (
               <div className="p-12 text-center bg-white rounded-3xl border border-[#E2E8EE]">
                 <h4 className="font-sora font-bold text-base text-[#002050]">No Matching Products Found</h4>
                 <p className="text-xs text-[#5B6B73] mt-1 max-w-sm mx-auto">
@@ -367,84 +305,30 @@ export const ProductsPage: React.FC = () => {
                 </button>
               </div>
             ) : viewMode === 'grid' ? (
-              /* GRID VIEW with Group Expanders */
-              <div className="space-y-6">
-                {groupedProducts.map(group => {
-                  const isExpanded = expandedGroups[group.name] ?? true;
-                  return (
-                    <div
-                      key={group.name}
-                      className="bg-white rounded-3xl p-6 border border-[#E2E8EE] shadow-2xs space-y-4"
-                    >
-                      {/* Group Header */}
-                      <div
-                        onClick={() => toggleGroup(group.name)}
-                        className="flex items-center justify-between cursor-pointer select-none group"
-                      >
-                        <div className="flex items-center gap-3">
-                          <button
-                            className="p-1 rounded-full bg-[#F4F8FA] text-slate-500 group-hover:text-black group-hover:bg-[#E6F7F5]"
-                            aria-label={`Toggle group ${group.name}`}
-                          >
-                            {isExpanded ? (
-                              <ChevronDown className="w-4 h-4" />
-                            ) : (
-                              <ChevronRight className="w-4 h-4" />
-                            )}
-                          </button>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <h3 className="font-sora font-bold text-lg text-[#002050] group-hover:text-[#00B8AA] transition-colors">
-                                {group.name}
-                              </h3>
-                              <span className="text-[11px] font-mono-code px-2 py-0.5 rounded-full bg-[#F4F8FA] border border-[#E2E8EE] text-[#5B6B73]">
-                                {group.variants.length} {group.variants.length === 1 ? 'spec' : 'specs'}
-                              </span>
-                            </div>
-                            <span className="text-xs text-[#5B6B73] font-inter">
-                              {group.category}
-                            </span>
-                          </div>
-                        </div>
-
-                        <span className="text-xs font-mono-code text-[#00B8AA] font-semibold">
-                          From ${Math.min(...group.variants.map(v => v.price))} /pack
-                        </span>
-                      </div>
-
-                      {/* Expanded Grid Cards */}
-                      {isExpanded && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
-                          {group.variants.map(product => (
-                            <ProductCard
-                              key={product.id}
-                              product={product}
-                              onOpenDetails={prod => setSelectedProduct(prod)}
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                {filteredProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onOpenDetails={(prod) => setSelectedProduct(prod)}
+                  />
+                ))}
               </div>
             ) : (
-              /* LIST VIEW */
               <div className="bg-white rounded-3xl border border-[#E2E8EE] overflow-hidden shadow-2xs">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
                     <thead className="bg-[#F4F8FA] border-b border-[#E2E8EE] text-[11px] font-semibold text-[#5B6B73] uppercase tracking-wider font-sora">
                       <tr>
                         <th className="py-3 px-4">SKU</th>
-                        <th className="py-3 px-4">Product Formulation</th>
-                        <th className="py-3 px-4">Specification</th>
-                        <th className="py-3 px-4">Purity</th>
-                        <th className="py-3 px-4">Wholesale Price</th>
+                        <th className="py-3 px-4">Product</th>
+                        <th className="py-3 px-4">Sizes</th>
+                        <th className="py-3 px-4">Price</th>
                         <th className="py-3 px-4 text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#E2E8EE] font-inter">
-                      {filteredProducts.map(product => {
+                      {filteredProducts.map((product) => {
                         const isAdded = addedItemIds[product.id];
                         return (
                           <tr
@@ -463,37 +347,47 @@ export const ProductsPage: React.FC = () => {
                                 {product.category}
                               </span>
                             </td>
-                            <td className="py-3.5 px-4 font-mono-code text-[#5B6B73]">
+                            <td className="py-3.5 px-4 font-mono-code text-[#5B6B73] max-w-[220px]">
                               {product.spec}
                             </td>
-                            <td className="py-3.5 px-4 font-mono-code text-[#00B8AA] font-semibold">
-                              {product.purity}
-                            </td>
                             <td className="py-3.5 px-4 font-mono-code font-bold text-[#002050] text-sm">
-                              ${product.price}
-                              <span className="text-[10px] text-slate-400 font-normal"> /pack</span>
+                              {formatProductPrice(product)}
                             </td>
                             <td className="py-3.5 px-4 text-right">
-                              <button
-                                onClick={e => handleAddVariant(product, e)}
-                                className={`px-3 py-1.5 rounded-full font-sora text-xs font-semibold inline-flex items-center gap-1.5 transition-all ${
-                                  isAdded
-                                    ? 'bg-emerald-600 text-white'
-                                    : 'bg-[#002050] hover:bg-[#001538] text-white'
-                                }`}
-                              >
-                                {isAdded ? (
-                                  <>
-                                    <Check className="w-3 h-3 text-white" />
-                                    <span>Added</span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <Plus className="w-3 h-3 text-[#5EC8E8]" />
-                                    <span>Add</span>
-                                  </>
+                              <div className="inline-flex items-center gap-2">
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedProduct(product);
+                                  }}
+                                  className="px-3 py-1.5 rounded-full font-sora text-xs font-semibold inline-flex items-center gap-1.5 border border-[#E2E8EE] text-[#002050] hover:border-[#00B8AA]"
+                                >
+                                  <Eye className="w-3 h-3" />
+                                  Details
+                                </button>
+                                {!product.buyLink && (
+                                  <button
+                                    onClick={(e) => handleAddVariant(product, e)}
+                                    className={`px-3 py-1.5 rounded-full font-sora text-xs font-semibold inline-flex items-center gap-1.5 transition-all ${
+                                      isAdded
+                                        ? 'bg-emerald-600 text-white'
+                                        : 'bg-[#002050] hover:bg-[#001538] text-white'
+                                    }`}
+                                  >
+                                    {isAdded ? (
+                                      <>
+                                        <Check className="w-3 h-3 text-white" />
+                                        Added
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Plus className="w-3 h-3 text-[#5EC8E8]" />
+                                        Add
+                                      </>
+                                    )}
+                                  </button>
                                 )}
-                              </button>
+                              </div>
                             </td>
                           </tr>
                         );
@@ -507,15 +401,10 @@ export const ProductsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Product Detail Modal */}
       {selectedProduct && (
         <ProductDetailModal
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}
-          relatedProducts={products.filter(
-            p => p.category === selectedProduct.category && p.id !== selectedProduct.id
-          )}
-          onSelectProduct={prod => setSelectedProduct(prod)}
         />
       )}
     </div>

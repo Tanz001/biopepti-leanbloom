@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Product } from '../../types';
+import { Product, formatProductPrice } from '../../types';
 import { useCart } from '../../context/CartContext';
 import { VialGraphic } from '../ui/VialGraphic';
-import { Check, Plus, Eye, Sparkles, ExternalLink } from 'lucide-react';
+import { Check, Plus, Eye, ExternalLink } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -15,11 +15,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
-    addItem(product, 1);
+    const first = product.variants[0];
+    if (!first) return;
+    addItem(
+      {
+        ...product,
+        id: `${product.id}__${first.id}`,
+        spec: first.strength,
+        price: first.price,
+      },
+      1
+    );
     setJustAdded(true);
-    setTimeout(() => {
-      setJustAdded(false);
-    }, 1200);
+    setTimeout(() => setJustAdded(false), 1200);
   };
 
   const handleBuyNow = (e: React.MouseEvent) => {
@@ -51,6 +59,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
     }
   };
 
+  const variantCount = product.variants?.length || 0;
+
   return (
     <div
       onClick={() => onOpenDetails && onOpenDetails(product)}
@@ -61,11 +71,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
           <span className="font-mono-code text-[11px] font-bold text-[#002050] bg-[#F4F8FA] border border-[#E2E8EE] px-2.5 py-1 rounded-full">
             {product.sku}
           </span>
-
-          <span className="inline-flex items-center gap-1 font-mono-code text-[11px] font-semibold text-[#00B8AA] bg-[#E6F7F5] px-2 py-0.5 rounded-full">
-            <Sparkles className="w-3 h-3 text-[#00B8AA]" />
-            {product.purity}
-          </span>
+          {variantCount > 1 && (
+            <span className="text-[11px] font-semibold text-[#00B8AA] bg-[#E6F7F5] px-2 py-0.5 rounded-full">
+              {variantCount} sizes
+            </span>
+          )}
         </div>
 
         <div className="relative w-full h-44 rounded-2xl bg-gradient-to-b from-[#E6F7F5] to-[#F4F8FA] flex items-center justify-center p-3 mb-4 overflow-hidden border border-[#E2E8EE]/60 group-hover:border-[#5EC8E8]/40 transition-colors">
@@ -102,18 +112,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
           <h4 className="font-sora font-bold text-base text-[#002050] group-hover:text-[#00B8AA] transition-colors leading-snug line-clamp-1">
             {product.name}
           </h4>
-          <p className="font-mono-code text-xs text-[#5B6B73]">{product.spec}</p>
+          <p className="font-mono-code text-xs text-[#5B6B73] line-clamp-2">{product.spec}</p>
         </div>
       </div>
 
       <div className="pt-3 border-t border-[#E2E8EE] flex items-center justify-between gap-2">
         <div>
           <span className="text-[10px] uppercase text-[#5B6B73] font-semibold block tracking-wider">
-            Wholesale
+            From
           </span>
           <span className="font-mono-code font-bold text-lg text-[#002050]">
-            ${product.price}
-            <span className="text-xs font-normal text-[#5B6B73]"> /pack</span>
+            {formatProductPrice(product)}
           </span>
         </div>
 
@@ -139,13 +148,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetails
             >
               {justAdded ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-white animate-in zoom-in-50 duration-150" />
+                  <Check className="w-3.5 h-3.5 text-white" />
                   <span>Added</span>
                 </>
               ) : (
                 <>
                   <Plus className="w-3.5 h-3.5 text-[#5EC8E8]" />
-                  <span>Add to Quote</span>
+                  <span>Add</span>
                 </>
               )}
             </button>

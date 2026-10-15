@@ -789,15 +789,10 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Product Detail Modal */}
       {selectedProduct && (
         <ProductDetailModal
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}
-          relatedProducts={products.filter(
-            p => p.category === selectedProduct.category && p.id !== selectedProduct.id
-          )}
-          onSelectProduct={prod => setSelectedProduct(prod)}
         />
       )}
     </div>

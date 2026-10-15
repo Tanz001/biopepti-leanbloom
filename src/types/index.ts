@@ -1,13 +1,25 @@
 export type ProductCategory = string;
 
+export interface ProductVariantOption {
+  id: string;
+  strength: string; // e.g. "5mg/vial*10 vials"
+  price: number;
+  stock: 'in_stock' | 'low' | 'out_of_stock' | string;
+  sku?: string;
+}
+
 export interface Product {
   id: string;
   sku: string;
   name: string;
-  spec: string; // e.g. "5mg"
-  price: number; // in USD
+  /** Joined strengths for search/display summary */
+  spec: string;
+  /** Lowest variant price (for sorting / card default) */
+  price: number;
+  priceMin: number;
+  priceMax: number;
   category: ProductCategory;
-  purity: string; // e.g. "99.4%"
+  purity: string;
   casNumber?: string;
   sequence?: string;
   molecularFormula?: string;
@@ -17,11 +29,10 @@ export interface Product {
   storage?: string;
   inStock: boolean;
   leadTime?: string;
-  /** External checkout / purchase URL from admin */
   buyLink?: string;
   image?: string;
   featured?: boolean;
-  parentId?: string;
+  variants: ProductVariantOption[];
 }
 
 export interface ProductGroup {
@@ -48,7 +59,7 @@ export interface QuoteCustomer {
 }
 
 export interface SavedQuote {
-  id: string; // e.g. "Q-0IC5LUL2"
+  id: string;
   createdAt: string;
   customer: QuoteCustomer;
   items: CartItem[];
@@ -56,7 +67,7 @@ export interface SavedQuote {
   discountValue: number;
   shippingFee: number;
   includeTax: boolean;
-  taxRate: number; // e.g. 5%
+  taxRate: number;
   notes: string;
   subtotal: number;
   discountAmount: number;
@@ -67,13 +78,13 @@ export interface SavedQuote {
 
 export interface COARecord {
   id: string;
-  batchNumber: string; // e.g. "LL-2025-0814"
+  batchNumber: string;
   productName: string;
   sku: string;
   spec: string;
-  purity: string; // e.g. "99.62%"
-  testMethod: string; // "HPLC / Mass Spec"
-  testedDate: string; // "2025-08-14"
+  purity: string;
+  testMethod: string;
+  testedDate: string;
   manufactureDate: string;
   expiryDate: string;
   analyst: string;
@@ -94,4 +105,29 @@ export interface OEMInquiry {
   packagingPreference: string;
   customFormulation: boolean;
   message: string;
+}
+
+/** Build a cart/quote line from a product + chosen strength. */
+export function productWithVariant(
+  product: Product,
+  variant: ProductVariantOption
+): Product {
+  return {
+    ...product,
+    id: `${product.id}__${variant.id}`,
+    sku: variant.sku || product.sku,
+    spec: variant.strength,
+    price: variant.price,
+    priceMin: variant.price,
+    priceMax: variant.price,
+    inStock: variant.stock !== 'out_of_stock',
+    variants: [variant],
+  };
+}
+
+export function formatProductPrice(product: Product): string {
+  if (product.priceMin === product.priceMax) {
+    return `$${product.priceMin.toFixed(2)}`;
+  }
+  return `$${product.priceMin.toFixed(2)} – $${product.priceMax.toFixed(2)}`;
 }
